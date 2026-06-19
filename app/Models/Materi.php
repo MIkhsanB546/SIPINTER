@@ -13,7 +13,7 @@ class Materi extends Model
     protected $primaryKey = 'id_materi';
 
     protected $fillable = [
-        'id_guru',
+        'id_teacher',
         'jenjang_id',
         'kategori_materi_id',
         'judul',
@@ -24,7 +24,7 @@ class Materi extends Model
 
     public function teacher(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id_guru', 'id_user');
+        return $this->belongsTo(User::class, 'id_teacher', 'id_user');
     }
 
     public function jenjang(): BelongsTo
