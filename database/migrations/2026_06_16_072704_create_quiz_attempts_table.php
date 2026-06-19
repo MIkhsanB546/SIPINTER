@@ -11,24 +11,33 @@ return new class extends Migration
         Schema::create('quiz_attempts', function (Blueprint $table) {
             $table->id('id_quiz_attempt');
 
-            $table->foreignId('student_id')
-                ->constrained('user', 'id_user')
+            $table->foreignId('id_student')
+                ->constrained('users', 'id_user')
                 ->cascadeOnDelete();
 
-            $table->foreignId('quiz_id')
+            $table->foreignId('id_quiz')
                 ->constrained('quiz', 'id_quiz')
                 ->cascadeOnDelete();
 
             $table->decimal('skor_persen', 5, 2)
                 ->default(0);
 
-            $table->tinyInteger('bintang')
+            $table->unsignedTinyInteger('bintang')
                 ->default(0);
 
             $table->timestamp('tanggal_pengerjaan')
                 ->useCurrent();
 
+            $table->unsignedTinyInteger('attempt_ke')
+                ->default(1);
+
             $table->timestamps();
+
+            $table->unique([
+                'id_student',
+                'id_quiz',
+                'attempt_ke'
+            ]);
         });
     }
 

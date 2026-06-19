@@ -11,15 +11,15 @@ return new class extends Migration
         Schema::create('materi', function (Blueprint $table) {
             $table->id('id_materi');
 
-            $table->foreignId('teacher_id')
-                ->constrained('user', 'id_user')
+            $table->foreignId('id_guru')
+                ->constrained('users', 'id_user')
                 ->cascadeOnDelete();
 
-            $table->foreignId('jenjang_id')
+            $table->foreignId('id_jenjang')
                 ->constrained('jenjang', 'id_jenjang')
                 ->cascadeOnDelete();
 
-            $table->foreignId('kategori_materi_id')
+            $table->foreignId('id_kategori_materi')
                 ->constrained('kategori_materi', 'id_kategori_materi')
                 ->cascadeOnDelete();
 
@@ -28,6 +28,7 @@ return new class extends Migration
 
             $table->string('file_materi')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->boolean('is_published')->default(false);
 
             $table->timestamps();
         });

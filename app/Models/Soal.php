@@ -26,9 +26,4 @@ class Soal extends Model
     {
         return $this->hasMany(PilihanJawaban::class, 'soal_id', 'id_soal');
     }
-
-    public function jawabanSiswas(): HasMany
-    {
-        return $this->hasMany(JawabanSiswa::class, 'soal_id', 'id_soal');
-    }
 }

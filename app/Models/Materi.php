@@ -13,7 +13,7 @@ class Materi extends Model
     protected $primaryKey = 'id_materi';
 
     protected $fillable = [
-        'teacher_id',
+        'id_guru',
         'jenjang_id',
         'kategori_materi_id',
         'judul',
@@ -24,7 +24,7 @@ class Materi extends Model
 
     public function teacher(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'teacher_id', 'id_user');
+        return $this->belongsTo(User::class, 'id_guru', 'id_user');
     }
 
     public function jenjang(): BelongsTo
@@ -35,10 +35,5 @@ class Materi extends Model
     public function quizzes(): HasMany
     {
         return $this->hasMany(Quiz::class, 'materi_id', 'id_materi');
-    }
-
-    public function progressBelajars(): HasMany
-    {
-        return $this->hasMany(ProgressBelajar::class, 'materi_id', 'id_materi');
     }
 }

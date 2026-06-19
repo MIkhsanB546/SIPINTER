@@ -13,7 +13,7 @@ class QuizAttempt extends Model
     protected $primaryKey = 'id_quiz_attempt';
 
     protected $fillable = [
-        'student_id',
+        'id_student',
         'quiz_id',
         'skor_persen',
         'bintang',
@@ -26,16 +26,11 @@ class QuizAttempt extends Model
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'student_id', 'id_user');
+        return $this->belongsTo(User::class, 'id_student', 'id_user');
     }
 
     public function quiz(): BelongsTo
     {
         return $this->belongsTo(Quiz::class, 'quiz_id', 'id_quiz');
-    }
-
-    public function jawabanSiswas(): HasMany
-    {
-        return $this->hasMany(JawabanSiswa::class, 'attempt_id', 'id_quiz_attempt');
     }
 }

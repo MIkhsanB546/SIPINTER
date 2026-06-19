@@ -11,14 +11,14 @@ return new class extends Migration
         Schema::create('quiz', function (Blueprint $table) {
             $table->id('id_quiz');
 
-            $table->foreignId('materi_id')
+            $table->foreignId('id_materi')
                 ->constrained('materi', 'id_materi')
                 ->cascadeOnDelete();
 
             $table->string('judul');
             $table->text('deskripsi')->nullable();
 
-            $table->integer('durasi_menit')->nullable();
+            $table->unsignedSmallInteger('durasi_menit')->nullable();
 
             $table->timestamps();
         });

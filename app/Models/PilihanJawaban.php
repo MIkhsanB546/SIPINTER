@@ -26,9 +26,4 @@ class PilihanJawaban extends Model
     {
         return $this->belongsTo(Soal::class, 'soal_id', 'id_soal');
     }
-
-    public function jawabanSiswas(): HasMany
-    {
-        return $this->hasMany(JawabanSiswa::class, 'pilihan_jawaban_id', 'id_pilihan_jawaban');
-    }
 }

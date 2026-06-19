@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('soal', function (Blueprint $table) {
             $table->id('id_soal');
 
-            $table->foreignId('quiz_id')
+            $table->foreignId('id_quiz')
                 ->constrained('quiz', 'id_quiz')
                 ->cascadeOnDelete();
 
