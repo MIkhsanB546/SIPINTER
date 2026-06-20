@@ -71,7 +71,7 @@ storage/
 Clone repository
 
 ```bash
-git clone <url-repository>
+git clone https://github.com/MIkhsanB546/EduGrow.git
 cd sipintar
 ```
 
