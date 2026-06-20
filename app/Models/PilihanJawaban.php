@@ -3,27 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PilihanJawaban extends Model
 {
+    use HasFactory;
+
     protected $table = 'pilihan_jawaban';
 
     protected $primaryKey = 'id_pilihan_jawaban';
 
     protected $fillable = [
-        'soal_id',
+        'id_soal',
         'jawaban',
-        'is_correct',
+        'is_correct'
     ];
 
-    protected $casts = [
-        'is_correct' => 'boolean',
-    ];
-
-    public function soal(): BelongsTo
+    public function soal()
     {
-        return $this->belongsTo(Soal::class, 'soal_id', 'id_soal');
+        return $this->belongsTo(
+            Soal::class,
+            'id_soal'
+        );
     }
 }

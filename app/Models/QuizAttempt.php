@@ -3,34 +3,38 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class QuizAttempt extends Model
 {
+    use HasFactory;
+
     protected $table = 'quiz_attempts';
 
     protected $primaryKey = 'id_quiz_attempt';
 
     protected $fillable = [
         'id_student',
-        'quiz_id',
+        'id_quiz',
         'skor_persen',
         'bintang',
         'tanggal_pengerjaan',
+        'attempt_ke',
     ];
 
-    protected $casts = [
-        'skor_persen' => 'decimal:2',
-    ];
-
-    public function student(): BelongsTo
+    public function student()
     {
-        return $this->belongsTo(User::class, 'id_student', 'id_user');
+        return $this->belongsTo(
+            User::class,
+            'id_student'
+        );
     }
 
-    public function quiz(): BelongsTo
+    public function quiz()
     {
-        return $this->belongsTo(Quiz::class, 'quiz_id', 'id_quiz');
+        return $this->belongsTo(
+            Quiz::class,
+            'id_quiz'
+        );
     }
 }

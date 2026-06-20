@@ -3,37 +3,47 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Materi extends Model
 {
+    use HasFactory;
+
     protected $table = 'materi';
 
     protected $primaryKey = 'id_materi';
 
     protected $fillable = [
         'id_teacher',
-        'jenjang_id',
-        'kategori_materi_id',
+        'id_jenjang',
+        'id_kategori_materi',
         'judul',
         'deskripsi',
         'file_materi',
         'thumbnail',
+        'is_published',
     ];
 
-    public function teacher(): BelongsTo
+    public function teacher()
     {
-        return $this->belongsTo(User::class, 'id_teacher', 'id_user');
+        return $this->belongsTo(User::class, 'id_teacher');
     }
 
-    public function jenjang(): BelongsTo
+    public function jenjang()
     {
-        return $this->belongsTo(Jenjang::class, 'jenjang_id', 'id_jenjang');
+        return $this->belongsTo(Jenjang::class, 'id_jenjang');
     }
 
-    public function quizzes(): HasMany
+    public function kategori()
     {
-        return $this->hasMany(Quiz::class, 'materi_id', 'id_materi');
+        return $this->belongsTo(
+            KategoriMateri::class,
+            'id_kategori_materi'
+        );
+    }
+
+    public function quiz()
+    {
+        return $this->hasOne(Quiz::class, 'id_materi');
     }
 }
