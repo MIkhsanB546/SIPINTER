@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Jenjang;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class JenjangController extends Controller
+class QuizController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class JenjangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Jenjang $jenjang)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class JenjangController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Jenjang $jenjang)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class JenjangController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Jenjang $jenjang)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class JenjangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Jenjang $jenjang)
+    public function destroy(string $id)
     {
         //
     }

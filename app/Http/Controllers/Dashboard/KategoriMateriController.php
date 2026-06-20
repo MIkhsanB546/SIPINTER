@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Quiz;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class QuizController extends Controller
+class KategoriMateriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class QuizController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Quiz $quiz)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class QuizController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Quiz $quiz)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class QuizController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Quiz $quiz)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class QuizController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Quiz $quiz)
+    public function destroy(string $id)
     {
         //
     }

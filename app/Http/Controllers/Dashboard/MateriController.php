@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboard;
 
-use App\Models\Materi;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class MateriController extends Controller
@@ -34,7 +34,7 @@ class MateriController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Materi $materi)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class MateriController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Materi $materi)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class MateriController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Materi $materi)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class MateriController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Materi $materi)
+    public function destroy(string $id)
     {
         //
     }
