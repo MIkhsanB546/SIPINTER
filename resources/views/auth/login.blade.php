@@ -101,6 +101,10 @@
                     <!--end::Row-->
                 </form>
 
+                <p class="mb-1 mt-3 text-center">
+                    <a href="{{ route('register') }}">Daftar sebagai pengguna baru</a>
+                </p>
+
             </div>
             <!-- /.login-card-body -->
         </div>
