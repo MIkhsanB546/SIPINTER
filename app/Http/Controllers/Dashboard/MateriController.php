@@ -3,63 +3,116 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreMateriRequest;
+use App\Http\Requests\UpdateMateriRequest;
+use App\Models\Materi;
+use App\Models\Jenjang;
+use App\Models\KategoriMateri;
+use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $materiList = Materi::with(['guru', 'jenjang', 'kategori'])->latest()->get();
+        } else {
+            $materiList = Materi::with(['guru', 'jenjang', 'kategori'])
+                ->where('id_guru', $user->id_user)
+                ->latest()
+                ->get();
+        }
+
+        return view('dashboard.materi.index', compact('materiList'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $jenjangList = Jenjang::all();
+        $kategoriList = KategoriMateri::all();
+        return view('dashboard.materi.create', compact('jenjangList', 'kategoriList'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreMateriRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['id_guru'] = auth()->id();
+
+        if ($request->hasFile('file_materi')) {
+            $data['file_materi'] = $request->file('file_materi')->store('materi/files', 'public');
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            $data['thumbnail'] = $request->file('thumbnail')->store('materi/thumbnails', 'public');
+        }
+
+        $data['is_published'] = $request->boolean('is_published');
+
+        Materi::create($data);
+
+        return redirect()->route('dashboard.materi.index')
+            ->with('success', 'Materi berhasil dibuat.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Materi $materi)
     {
-        //
+        $this->authorize('view', $materi);
+        $materi->load(['guru', 'jenjang', 'kategori']);
+        return view('dashboard.materi.show', compact('materi'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Materi $materi)
     {
-        //
+        $this->authorize('update', $materi);
+        $jenjangList = Jenjang::all();
+        $kategoriList = KategoriMateri::all();
+        return view('dashboard.materi.edit', compact('materi', 'jenjangList', 'kategoriList'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateMateriRequest $request, Materi $materi)
     {
-        //
+        $this->authorize('update', $materi);
+
+        $data = $request->validated();
+
+        if ($request->hasFile('file_materi')) {
+            if ($materi->file_materi) {
+                Storage::disk('public')->delete($materi->file_materi);
+            }
+            $data['file_materi'] = $request->file('file_materi')->store('materi/files', 'public');
+        }
+
+        if ($request->hasFile('thumbnail')) {
+            if ($materi->thumbnail) {
+                Storage::disk('public')->delete($materi->thumbnail);
+            }
+            $data['thumbnail'] = $request->file('thumbnail')->store('materi/thumbnails', 'public');
+        }
+
+        $data['is_published'] = $request->boolean('is_published');
+
+        $materi->update($data);
+
+        return redirect()->route('dashboard.materi.index')
+            ->with('success', 'Materi berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Materi $materi)
     {
-        //
+        $this->authorize('delete', $materi);
+
+        if ($materi->file_materi) {
+            Storage::disk('public')->delete($materi->file_materi);
+        }
+        if ($materi->thumbnail) {
+            Storage::disk('public')->delete($materi->thumbnail);
+        }
+
+        $materi->delete();
+
+        return redirect()->route('dashboard.materi.index')
+            ->with('success', 'Materi berhasil dihapus.');
     }
 }

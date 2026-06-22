@@ -25,16 +25,13 @@ class Quiz extends Model
         return $this->belongsTo(Materi::class, 'id_materi');
     }
 
-    public function soal()
+    public function soals()
     {
         return $this->hasMany(Soal::class, 'id_quiz');
     }
 
-    public function quizAttempts()
+    public function attempts()
     {
-        return $this->hasMany(
-            QuizAttempt::class,
-            'id_quiz'
-        );
+        return $this->hasMany(QuizAttempt::class, 'id_quiz');
     }
 }

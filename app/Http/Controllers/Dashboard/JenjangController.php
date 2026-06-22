@@ -3,63 +3,66 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Jenjang;
 use Illuminate\Http\Request;
 
 class JenjangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $jenjangList = Jenjang::withCount('materi')->latest()->get();
+        return view('dashboard.jenjang.index', compact('jenjangList'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('dashboard.jenjang.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'nama_jenjang' => ['required', 'string', 'max:50', 'unique:jenjang,nama_jenjang'],
+        ], [
+            'nama_jenjang.required' => 'Nama jenjang wajib diisi.',
+            'nama_jenjang.unique' => 'Nama jenjang sudah ada.',
+        ]);
+
+        Jenjang::create($data);
+
+        return redirect()->route('dashboard.jenjang.index')
+            ->with('success', 'Jenjang berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Jenjang $jenjang)
     {
-        //
+        return view('dashboard.jenjang.edit', compact('jenjang'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, Jenjang $jenjang)
     {
-        //
+        $data = $request->validate([
+            'nama_jenjang' => ['required', 'string', 'max:50', 'unique:jenjang,nama_jenjang,' . $jenjang->id_jenjang . ',id_jenjang'],
+        ], [
+            'nama_jenjang.required' => 'Nama jenjang wajib diisi.',
+            'nama_jenjang.unique' => 'Nama jenjang sudah ada.',
+        ]);
+
+        $jenjang->update($data);
+
+        return redirect()->route('dashboard.jenjang.index')
+            ->with('success', 'Jenjang berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Jenjang $jenjang)
     {
-        //
-    }
+        if ($jenjang->materi()->count() > 0) {
+            return back()->with('error', 'Jenjang tidak dapat dihapus karena masih memiliki materi.');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $jenjang->delete();
+
+        return redirect()->route('dashboard.jenjang.index')
+            ->with('success', 'Jenjang berhasil dihapus.');
     }
 }

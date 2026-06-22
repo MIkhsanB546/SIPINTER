@@ -1,99 +1,78 @@
-<!doctype html>
-<html lang="id">
+@extends('layouts.student')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Materi - SIPINTER</title>
+@section('title', 'Materi Pembelajaran')
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-        crossorigin="anonymous">
-</head>
+@section('content')
+<div class="mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-900">Materi Pembelajaran</h1>
+    <p class="text-gray-500 mt-1 text-lg">Pilih materi yang ingin kamu pelajari</p>
+</div>
 
-<body class="bg-light">
-    <nav class="navbar navbar-expand bg-white shadow-sm border-bottom">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-4" href="{{ route('siswa.dashboard') }}">
-                SIPINTER
-                <small class="d-block fs-6 fw-normal text-muted">Belajar Interaktif dan Menyenangkan</small>
-            </a>
-            <ul class="navbar-nav ms-auto align-items-center gap-2">
-                <li class="nav-item">
-                    <a href="{{ route('siswa.dashboard') }}" class="nav-link text-muted">
-                        <i class="bi bi-grid-fill"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <span class="nav-link text-muted">{{ auth()->user()->name }}</span>
-                </li>
-                <li class="nav-item">
-                    <form action="{{ route('logout') }}" method="post" class="m-0">
-                        @csrf
-                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">Keluar</button>
-                    </form>
-                </li>
-            </ul>
-        </div>
-    </nav>
+@php
+$grouped = $materiList->groupBy(fn ($m) => $m->kategori->nama_kategori ?? 'Umum');
+$kategoriColors = [
+    'Matematika' => 'from-indigo-400 to-purple-500',
+    'Bahasa Indonesia' => 'from-emerald-400 to-teal-500',
+    'IPA' => 'from-amber-400 to-orange-500',
+    'IPS' => 'from-red-400 to-orange-500',
+    'Bahasa Inggris' => 'from-cyan-400 to-blue-500',
+];
+@endphp
 
-    <main class="container py-4">
-        <div class="mb-4">
-            <h2 class="fw-bold">Materi Pembelajaran</h2>
-            <p class="text-muted">Pilih materi yang ingin kamu pelajari</p>
-        </div>
-
+@forelse ($grouped as $kategori => $materiGroup)
+<div class="mb-8">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">{{ $kategori }}</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        @foreach ($materiGroup as $materi)
         @php
-            $grouped = $materiList->groupBy(fn ($m) => $m->kategori->nama_kategori ?? 'Umum');
+        $gradient = $kategoriColors[$kategori] ?? 'from-indigo-400 to-purple-500';
         @endphp
-
-        @forelse ($grouped as $kategori => $materiGroup)
-            <div class="mb-4">
-                <h5 class="fw-bold mb-3">{{ $kategori }}</h5>
-                <div class="row g-3">
-                    @foreach ($materiGroup as $materi)
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card border-0 shadow-sm rounded-4 h-100 overflow-hidden">
-                                <div class="bg-primary bg-opacity-10 d-flex align-items-center justify-content-center"
-                                    style="height: 140px;">
-                                    <i class="bi bi-journal-bookmark-fill fs-1 text-primary opacity-50"></i>
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h6 class="fw-bold mb-1">{{ $materi->judul }}</h6>
-                                    <small class="text-muted mb-1">
-                                        <i class="bi bi-person"></i> {{ $materi->guru->name ?? '-' }}
-                                    </small>
-                                    <small class="text-muted mb-3">
-                                        <i class="bi bi-bar-chart"></i> {{ $materi->jenjang->nama_jenjang ?? '-' }}
-                                    </small>
-                                    <div class="d-flex gap-2 mt-auto">
-                                        <a href="{{ route('siswa.materi.show', $materi) }}"
-                                            class="btn btn-primary rounded-pill w-100">
-                                            Pelajari
-                                        </a>
-                                        @if ($materi->quiz)
-                                            <a href="#" class="btn btn-outline-success rounded-pill">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+            <div class="h-36 bg-gradient-to-br {{ $gradient }} flex items-center justify-center relative overflow-hidden">
+                @if ($materi->thumbnail)
+                <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
+                @else
+                <i class="bi bi-journal-bookmark-fill text-4xl text-white/70"></i>
+                @endif
+                @php $firstQuiz = $materi->quizzes->first(); @endphp
+                @if ($firstQuiz)
+                <div class="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 text-xs font-semibold text-emerald-600 flex items-center gap-1">
+                    <i class="bi bi-pencil-square text-xs"></i> Quiz
+                </div>
+                @endif
+            </div>
+            <div class="p-5">
+                <h3 class="font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $materi->judul }}</h3>
+                <p class="text-xs text-gray-500 mb-1">
+                    <i class="bi bi-person me-1"></i>{{ $materi->guru->name ?? '-' }}
+                </p>
+                <p class="text-xs text-gray-500 mb-3">
+                    <i class="bi bi-bar-chart me-1"></i>{{ $materi->jenjang->nama_jenjang ?? '-' }}
+                </p>
+                <div class="flex gap-2">
+                    <a href="{{ route('siswa.materi.show', $materi) }}"
+                        class="flex-1 inline-flex items-center justify-center px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors shadow-sm">
+                        Pelajari
+                    </a>
+                    @if ($firstQuiz)
+                    <a href="{{ route('siswa.quiz.start', $firstQuiz) }}"
+                        class="inline-flex items-center justify-center px-4 py-2.5 bg-emerald-50 text-emerald-700 rounded-xl text-sm font-semibold hover:bg-emerald-100 transition-colors">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    @endif
                 </div>
             </div>
-        @empty
-            <div class="text-center py-5">
-                <i class="bi bi-book fs-1 text-muted"></i>
-                <p class="text-muted mt-3">Belum ada materi tersedia</p>
-            </div>
-        @endforelse
-    </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-</body>
-
-</html>
+        </div>
+        @endforeach
+    </div>
+</div>
+@empty
+<div class="text-center py-16">
+    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+        <i class="bi bi-book text-3xl text-gray-400"></i>
+    </div>
+    <h3 class="text-lg font-semibold text-gray-900 mb-1">Belum ada materi tersedia</h3>
+    <p class="text-gray-500 text-sm">Materi akan muncul ketika guru sudah mempublikasikannya.</p>
+</div>
+@endforelse
+@endsection

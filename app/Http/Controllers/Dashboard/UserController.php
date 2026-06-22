@@ -3,63 +3,62 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $users = User::latest()->get();
+        return view('dashboard.users.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('dashboard.users.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['password'] = bcrypt($data['password']);
+        User::create($data);
+
+        return redirect()->route('dashboard.users.index')
+            ->with('success', 'User berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(User $user)
     {
-        //
+        return view('dashboard.users.edit', compact('user'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(StoreUserRequest $request, User $user)
     {
-        //
+        $data = $request->validated();
+
+        if ($data['password']) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
+
+        return redirect()->route('dashboard.users.index')
+            ->with('success', 'User berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(User $user)
     {
-        //
-    }
+        if ($user->id_user === auth()->id()) {
+            return back()->with('error', 'Tidak dapat menghapus akun sendiri.');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $user->delete();
+
+        return redirect()->route('dashboard.users.index')
+            ->with('success', 'User berhasil dihapus.');
     }
 }

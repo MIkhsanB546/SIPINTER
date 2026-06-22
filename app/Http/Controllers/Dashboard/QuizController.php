@@ -3,63 +3,83 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreQuizRequest;
+use App\Http\Requests\UpdateQuizRequest;
+use App\Models\Quiz;
+use App\Models\Materi;
 
 class QuizController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $quizList = Quiz::with('materi.guru')->latest()->get();
+        } else {
+            $quizList = Quiz::with('materi.guru')
+                ->whereIn('id_materi', Materi::where('id_guru', $user->id_user)->select('id_materi'))
+                ->latest()
+                ->get();
+        }
+
+        return view('dashboard.quiz.index', compact('quizList'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        $user = auth()->user();
+        if ($user->role === 'admin') {
+            $materiList = Materi::all();
+        } else {
+            $materiList = Materi::where('id_guru', $user->id_user)->get();
+        }
+        return view('dashboard.quiz.create', compact('materiList'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreQuizRequest $request)
     {
-        //
+        $data = $request->validated();
+        Quiz::create($data);
+
+        return redirect()->route('dashboard.quiz.index')
+            ->with('success', 'Quiz berhasil dibuat.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Quiz $quiz)
     {
-        //
+        $this->authorize('view', $quiz);
+        $quiz->load('materi.guru', 'soal.pilihanJawaban');
+        return view('dashboard.quiz.show', compact('quiz'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function edit(Quiz $quiz)
     {
-        //
+        $this->authorize('update', $quiz);
+        $user = auth()->user();
+        if ($user->role === 'admin') {
+            $materiList = Materi::all();
+        } else {
+            $materiList = Materi::where('id_guru', $user->id_user)->get();
+        }
+        return view('dashboard.quiz.edit', compact('quiz', 'materiList'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(UpdateQuizRequest $request, Quiz $quiz)
     {
-        //
+        $this->authorize('update', $quiz);
+        $quiz->update($request->validated());
+
+        return redirect()->route('dashboard.quiz.index')
+            ->with('success', 'Quiz berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Quiz $quiz)
     {
-        //
+        $this->authorize('delete', $quiz);
+        $quiz->delete();
+
+        return redirect()->route('dashboard.quiz.index')
+            ->with('success', 'Quiz berhasil dihapus.');
     }
 }

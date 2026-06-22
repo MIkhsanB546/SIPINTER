@@ -129,26 +129,9 @@
                                 </p>
                             </li>
                             <!--end::User Image-->
-                            <!--begin::Menu Body-->
-                            <li class="user-body">
-                                <!--begin::Row-->
-                                <div class="row">
-                                    <div class="col-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!--end::Row-->
-                            </li>
-                            <!--end::Menu Body-->
                             <!--begin::Menu Footer-->
                             <li class="user-footer">
-                                <a href="#" class="btn btn-outline-secondary">Profile</a>
+                                <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-secondary">Profile</a>
                                 <form action="{{ route('logout') }}" method="post" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-outline-danger float-end">Sign out</button>
@@ -169,13 +152,9 @@
             <!--begin::Sidebar Brand-->
             <div class="sidebar-brand">
                 <!--begin::Brand Link-->
-                <a href="./index.html" class="brand-link">
-                    <!--begin::Brand Image-->
-                    <img src="./assets/img/AdminLTELogo.png" alt="AdminLTE Logo"
-                        class="brand-image opacity-75 shadow" />
-                    <!--end::Brand Image-->
+                <a href="{{ route('dashboard.index') }}" class="brand-link">
                     <!--begin::Brand Text-->
-                    <span class="brand-text fw-light">AdminLTE 4</span>
+                    <span class="brand-text fw-light">SIPINTER</span>
                     <!--end::Brand Text-->
                 </a>
                 <!--end::Brand Link-->
@@ -188,12 +167,79 @@
                     <!--begin::Sidebar Menu-->
                     <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation"
                         aria-label="Main navigation" data-accordion="false" id="navigation">
-                        <li class="nav-item">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon bi bi-list"></i>
-                                <p>Dashboard</p>
-                            </a>
-                        </li>
+                        @php
+                            $role = auth()->user()->role;
+                        @endphp
+
+                        @if ($role === 'admin')
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-speedometer2"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.users.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-people"></i>
+                                    <p>Kelola User</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.jenjang.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-layers"></i>
+                                    <p>Kelola Jenjang</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.kategori.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-tags"></i>
+                                    <p>Kelola Kategori Materi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.materi.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-book"></i>
+                                    <p>Kelola Materi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.quiz.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-pencil-square"></i>
+                                    <p>Kelola Quiz</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.laporan') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-file-text"></i>
+                                    <p>Laporan</p>
+                                </a>
+                            </li>
+                        @elseif ($role === 'guru')
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-speedometer2"></i>
+                                    <p>Dashboard</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.materi.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-book"></i>
+                                    <p>Kelola Materi</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.quiz.index') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-pencil-square"></i>
+                                    <p>Kelola Quiz</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('dashboard.hasil-siswa') }}" class="nav-link">
+                                    <i class="nav-icon bi bi-bar-chart"></i>
+                                    <p>Hasil Siswa</p>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                     <!--end::Sidebar Menu-->
                 </nav>

@@ -9,7 +9,7 @@ class MateriController extends Controller
 {
     public function index()
     {
-        $materiList = Materi::with(['guru', 'jenjang', 'kategori', 'quiz'])
+        $materiList = Materi::with(['guru', 'jenjang', 'kategori', 'quizzes'])
             ->where('is_published', true)
             ->latest()
             ->get();
@@ -19,7 +19,9 @@ class MateriController extends Controller
 
     public function show(Materi $materi)
     {
-        $materi->load(['guru', 'jenjang', 'kategori', 'quiz']);
+        abort_if(!$materi->is_published, 404);
+
+        $materi->load(['guru', 'jenjang', 'kategori', 'quizzes']);
 
         return view('student.materi.show', compact('materi'));
     }

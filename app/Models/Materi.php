@@ -26,7 +26,7 @@ class Materi extends Model
 
     public function guru()
     {
-        return $this->belongsTo(User::class, 'id_guru');
+        return $this->belongsTo(User::class, 'id_guru', 'id_user');
     }
 
     public function jenjang()
@@ -42,8 +42,8 @@ class Materi extends Model
         );
     }
 
-    public function quiz()
+    public function quizzes()
     {
-        return $this->hasOne(Quiz::class, 'id_materi');
+        return $this->hasMany(Quiz::class, 'id_materi');
     }
 }

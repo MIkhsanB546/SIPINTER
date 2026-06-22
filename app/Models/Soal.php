@@ -23,19 +23,13 @@ class Soal extends Model
         return $this->belongsTo(Quiz::class, 'id_quiz');
     }
 
-    public function pilihanJawaban()
+    public function pilihanJawabans()
     {
-        return $this->hasMany(
-            PilihanJawaban::class,
-            'id_soal'
-        );
+        return $this->hasMany(PilihanJawaban::class, 'id_soal');
     }
 
     public function jawabanSiswa()
     {
-        return $this->hasMany(
-            JawabanSiswa::class,
-            'id_soal'
-        );
+        return $this->hasMany(JawabanSiswa::class, 'id_soal');
     }
 }

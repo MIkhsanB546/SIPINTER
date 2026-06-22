@@ -3,63 +3,90 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreSoalRequest;
+use App\Models\Soal;
+use App\Models\Quiz;
+use App\Models\PilihanJawaban;
 
 class SoalController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Quiz $quiz)
     {
-        //
+        $this->authorize('view', $quiz);
+        $quiz->load('soals.pilihanJawabans');
+        return view('dashboard.soal.index', compact('quiz'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(Quiz $quiz)
     {
-        //
+        $this->authorize('update', $quiz);
+        return view('dashboard.soal.create', compact('quiz'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreSoalRequest $request, Quiz $quiz)
     {
-        //
+        $this->authorize('update', $quiz);
+
+        $data = $request->validated();
+
+        $soal = Soal::create([
+            'id_quiz' => $quiz->id_quiz,
+            'pertanyaan' => $data['pertanyaan'],
+        ]);
+
+        $jawabanBenarIndex = (int) $data['jawaban_benar'];
+
+        foreach ($data['pilihan_jawaban'] as $index => $pilihan) {
+            PilihanJawaban::create([
+                'id_soal' => $soal->id_soal,
+                'jawaban' => $pilihan['jawaban'],
+                'is_correct' => $index === $jawabanBenarIndex,
+            ]);
+        }
+
+        return redirect()->route('dashboard.quiz.soal.index', $quiz)
+            ->with('success', 'Soal berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(Quiz $quiz, Soal $soal)
     {
-        //
+        $this->authorize('update', $quiz);
+        $soal->load('pilihanJawabans');
+        return view('dashboard.soal.edit', compact('quiz', 'soal'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(StoreSoalRequest $request, Quiz $quiz, Soal $soal)
     {
-        //
+        $this->authorize('update', $quiz);
+
+        $data = $request->validated();
+
+        $soal->update([
+            'pertanyaan' => $data['pertanyaan'],
+        ]);
+
+        $soal->pilihanJawabans()->delete();
+
+        $jawabanBenarIndex = (int) $data['jawaban_benar'];
+
+        foreach ($data['pilihan_jawaban'] as $index => $pilihan) {
+            PilihanJawaban::create([
+                'id_soal' => $soal->id_soal,
+                'jawaban' => $pilihan['jawaban'],
+                'is_correct' => $index === $jawabanBenarIndex,
+            ]);
+        }
+
+        return redirect()->route('dashboard.quiz.soal.index', $quiz)
+            ->with('success', 'Soal berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy(Quiz $quiz, Soal $soal)
     {
-        //
-    }
+        $this->authorize('update', $quiz);
+        $soal->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect()->route('dashboard.quiz.soal.index', $quiz)
+            ->with('success', 'Soal berhasil dihapus.');
     }
 }

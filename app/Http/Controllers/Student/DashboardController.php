@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         $siswaId = auth()->id();
 
-        $totalQuiz = Quiz::count();
+        $totalQuiz = Quiz::whereHas('materi', fn($q) => $q->where('is_published', true))->count();
 
         $attempts = QuizAttempt::where('id_siswa', $siswaId)->get();
 
@@ -37,6 +37,15 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
+        $colors = [
+            'bg-gradient-mtk',
+            'bg-gradient-bind',
+            'bg-gradient-ipa',
+            'bg-gradient-ips',
+            'bg-gradient-bing',
+            'bg-gradient-default',
+        ];
+
         return view('student.dashboard.index', compact(
             'overallProgress',
             'averageScore',
@@ -44,6 +53,7 @@ class DashboardController extends Controller
             'totalStars',
             'continueMateri',
             'recentAttempts',
+            'colors',
         ));
     }
 }
