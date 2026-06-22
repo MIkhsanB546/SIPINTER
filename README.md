@@ -1,8 +1,8 @@
-# SIPINTAR
+# SIPINTER
 
 **Sistem Informasi Pendidikan Interaktif Berbasis Web untuk Mendukung Pendidikan Berkualitas**
 
-SIPINTAR merupakan aplikasi pembelajaran berbasis web yang memungkinkan guru untuk mengelola materi dan kuis, serta membantu siswa mempelajari materi, mengerjakan kuis, dan memantau perkembangan belajar mereka.
+SIPINTER merupakan aplikasi pembelajaran berbasis web yang memungkinkan guru mengelola materi dan kuis, serta membantu siswa mempelajari materi, mengerjakan kuis, dan memantau perkembangan belajar mereka.
 
 Aplikasi ini dikembangkan sebagai proyek **IT Bootcamp Kelompok 10**.
 
@@ -10,27 +10,33 @@ Aplikasi ini dikembangkan sebagai proyek **IT Bootcamp Kelompok 10**.
 
 ## ✨ Fitur Utama
 
-### Admin
+### 👨‍💼 Admin
 
 - Login dan logout
-- Mengelola data pengguna
-- Mengelola data jenjang pendidikan
+- Mengelola pengguna
+- Mengelola jenjang pendidikan
 - Mengelola kategori materi
+- Mengelola materi pembelajaran
+- Mengelola kuis dan soal
 - Melihat statistik penggunaan aplikasi
+- Melihat laporan aktivitas siswa
 
-### Guru
+### 👨‍🏫 Guru
 
-- Registrasi dan login
-- Membuat, mengubah, dan menghapus materi pembelajaran
-- Membuat kuis untuk setiap materi
+- Login dan logout
+- Membuat, mengubah, dan menghapus materi
+- Mengunggah file materi
+- Membuat kuis untuk materi
 - Menambahkan soal dan pilihan jawaban
+- Mempublikasikan materi
 - Melihat hasil pengerjaan kuis siswa
 
-### Siswa
+### 👨‍🎓 Siswa
 
-- Registrasi dan login
-- Melihat materi pembelajaran
+- Login dan logout
+- Melihat materi yang dipublikasikan
 - Mengerjakan kuis
+- Mendapatkan skor dan bintang
 - Melihat riwayat pengerjaan kuis
 - Memantau progres pembelajaran
 
@@ -55,11 +61,11 @@ app/
 database/
 public/
 resources/
- ├── views/
- │   ├── auth/
- │   ├── dashboard/
- │   ├── layouts/
- │   └── student/
+├── views/
+│   ├── auth/
+│   ├── dashboard/
+│   ├── layouts/
+│   └── student/
 routes/
 storage/
 ```
@@ -71,8 +77,8 @@ storage/
 Clone repository
 
 ```bash
-git clone https://github.com/MIkhsanB546/EduGrow.git
-cd sipintar
+git clone https://github.com/MIkhsanB546/SIPINTER.git
+cd SIPINTER
 ```
 
 Install dependency
@@ -83,8 +89,16 @@ composer install
 
 Salin file environment
 
+Linux/MacOS
+
 ```bash
 cp .env.example .env
+```
+
+Windows
+
+```cmd
+copy .env.example .env
 ```
 
 Generate application key
@@ -96,7 +110,11 @@ php artisan key:generate
 Konfigurasikan database pada file `.env`
 
 ```env
-DB_DATABASE=db_sipintar
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+
+DB_DATABASE=db_sipinter
 DB_USERNAME=root
 DB_PASSWORD=
 ```
@@ -107,7 +125,7 @@ Jalankan migrasi dan seeder
 php artisan migrate:fresh --seed
 ```
 
-Buat symbolic link storage
+Buat symbolic link untuk penyimpanan file
 
 ```bash
 php artisan storage:link
@@ -119,25 +137,27 @@ Jalankan server
 php artisan serve
 ```
 
-Aplikasi dapat diakses melalui
+Akses aplikasi melalui:
 
 ```text
-http://localhost:8000
+http://127.0.0.1:8000
 ```
 
 ---
 
 ## 👥 Anggota Kelompok 10
 
-- 19240557 — Muhammad Fariz Kurnia Rizq
-- 19241155 — Muhammad Rafi Robbani
-- 19240817 — Ghiffari Nasrallah Zein
-- 19241212 — Khalid Aflaha
-- 19240452 — Muhammad Ikhsan Basuki
-- 19240350 — Rafi Ibnu Kautsar
-- 19241055 — Nazwa Nur Rochman
-- 19241094 — Annisa Rahmadania
-- 19242262 — Mohamad Yoga Ramadhan
+| NIM      | Nama                       |
+| -------- | -------------------------- |
+| 19240557 | Muhammad Fariz Kurnia Rizq |
+| 19241155 | Muhammad Rafi Robbani      |
+| 19240817 | Ghiffari Nasrallah Zein    |
+| 19241212 | Khalid Aflaha              |
+| 19240452 | Muhammad Ikhsan Basuki     |
+| 19240350 | Rafi Ibnu Kautsar          |
+| 19241055 | Nazwa Nur Rochman          |
+| 19241094 | Annisa Rahmadania          |
+| 19242262 | Mohamad Yoga Ramadhan      |
 
 ---
 
