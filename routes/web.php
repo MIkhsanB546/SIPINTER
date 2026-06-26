@@ -21,6 +21,8 @@ use App\Http\Controllers\StyleGuideController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/styleguide', [StyleGuideController::class, 'index'])->name('styleguide');
+Route::get('/styleguide/student', [StyleGuideController::class, 'student'])->name('styleguide.student');
+Route::get('/styleguide/admin', [StyleGuideController::class, 'admin'])->name('styleguide.admin');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
