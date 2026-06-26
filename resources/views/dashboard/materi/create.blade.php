@@ -9,6 +9,15 @@
             <h5 class="card-title mb-0">Tambah Materi Baru</h5>
         </div>
         <div class="card-body">
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <form action="{{ route('dashboard.materi.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
@@ -76,8 +85,11 @@
 
                 <div class="mb-3 form-check">
                     <input type="hidden" name="is_published" value="0">
-                    <input type="checkbox" name="is_published" id="is_published" class="form-check-input" value="1" {{ old('is_published') ? 'checked' : '' }}>
+                    <input type="checkbox" name="is_published" id="is_published" class="form-check-input @error('is_published') is-invalid @enderror" value="1" {{ old('is_published') ? 'checked' : '' }}>
                     <label class="form-check-label" for="is_published">Published</label>
+                    @error('is_published')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="d-flex gap-2">

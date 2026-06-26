@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreKategoriMateriRequest;
+use App\Http\Requests\UpdateKategoriMateriRequest;
 use App\Models\KategoriMateri;
-use Illuminate\Http\Request;
 
 class KategoriMateriController extends Controller
 {
@@ -19,17 +20,9 @@ class KategoriMateriController extends Controller
         return view('dashboard.kategori.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreKategoriMateriRequest $request)
     {
-        $data = $request->validate([
-            'nama_kategori' => ['required', 'string', 'max:100', 'unique:kategori_materi,nama_kategori'],
-            'deskripsi' => ['nullable', 'string'],
-        ], [
-            'nama_kategori.required' => 'Nama kategori wajib diisi.',
-            'nama_kategori.unique' => 'Nama kategori sudah ada.',
-        ]);
-
-        KategoriMateri::create($data);
+        KategoriMateri::create($request->validated());
 
         return redirect()->route('dashboard.kategori.index')
             ->with('success', 'Kategori berhasil ditambahkan.');
@@ -40,17 +33,9 @@ class KategoriMateriController extends Controller
         return view('dashboard.kategori.edit', compact('kategori'));
     }
 
-    public function update(Request $request, KategoriMateri $kategori)
+    public function update(UpdateKategoriMateriRequest $request, KategoriMateri $kategori)
     {
-        $data = $request->validate([
-            'nama_kategori' => ['required', 'string', 'max:100', 'unique:kategori_materi,nama_kategori,' . $kategori->id_kategori_materi . ',id_kategori_materi'],
-            'deskripsi' => ['nullable', 'string'],
-        ], [
-            'nama_kategori.required' => 'Nama kategori wajib diisi.',
-            'nama_kategori.unique' => 'Nama kategori sudah ada.',
-        ]);
-
-        $kategori->update($data);
+        $kategori->update($request->validated());
 
         return redirect()->route('dashboard.kategori.index')
             ->with('success', 'Kategori berhasil diperbarui.');

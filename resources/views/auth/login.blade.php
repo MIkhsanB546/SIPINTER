@@ -50,13 +50,15 @@
                 <div class="card border-0 shadow rounded-4" style="background-color: #FFFFFF;">
                     <div class="card-body p-4">
 
-                        @error('email')
-                            <div class="alert alert-danger d-flex align-items-center gap-2 py-2 ps-3 pe-2 rounded-3 mb-3"
-                                role="alert">
-                                <i class="bi bi-exclamation-circle"></i>
-                                <span>{{ $message }}</span>
-                            </div>
-                        @enderror
+                        @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        @endif
 
                         <form action="{{ route('login') }}" method="post">
                             @csrf
@@ -71,17 +73,23 @@
                                         value="{{ old('email') }}" placeholder="name@example.com" style="border-color: #DDE7EF;">
                                     <label for="loginEmail">Email</label>
                                 </div>
+                                @error('email')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <div class="input-group mb-4">
+                            <div class="input-group mb-3">
                                 <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
                                     <i class="bi bi-lock-fill" style="color: #095890;"></i>
                                 </span>
                                 <div class="form-floating flex-grow-1">
                                     <input id="loginPassword" name="password" type="password"
-                                        class="form-control border-start-0 rounded-end-4" placeholder="Password" style="border-color: #DDE7EF;">
+                                        class="form-control border-start-0 rounded-end-4 @error('password') is-invalid @enderror" placeholder="Password" style="border-color: #DDE7EF;">
                                     <label for="loginPassword">Password</label>
                                 </div>
+                                @error('password')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <button type="submit" class="btn-si-primary btn w-100 rounded-pill py-2 fw-semibold border-0">

@@ -11,6 +11,15 @@
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="p-6 sm:p-8">
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <form action="{{ route('siswa.profile.update') }}" method="POST">
                 @csrf
                 @method('PUT')
@@ -20,10 +29,10 @@
                         <i class="bi bi-person me-1 text-[#095890]"></i> Nama Lengkap
                     </label>
                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
-                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#095890] focus:ring-2 focus:ring-[#095890]/20 focus:outline-none transition @error('name') border-red-400 @enderror"
+                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#095890] focus:ring-2 focus:ring-[#095890]/20 focus:outline-none transition @error('name') is-invalid @enderror"
                         placeholder="Masukkan nama lengkap">
                     @error('name')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -32,10 +41,10 @@
                         <i class="bi bi-envelope me-1 text-[#095890]"></i> Email
                     </label>
                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
-                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#095890] focus:ring-2 focus:ring-[#095890]/20 focus:outline-none transition @error('email') border-red-400 @enderror"
+                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#095890] focus:ring-2 focus:ring-[#095890]/20 focus:outline-none transition @error('email') is-invalid @enderror"
                         placeholder="Masukkan email">
                     @error('email')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
@@ -51,10 +60,10 @@
                         <i class="bi bi-lock me-1 text-[#095890]"></i> Password Baru
                     </label>
                     <input type="password" name="password" id="password"
-                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#095890] focus:ring-2 focus:ring-[#095890]/20 focus:outline-none transition @error('password') border-red-400 @enderror"
+                        class="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:border-[#095890] focus:ring-2 focus:ring-[#095890]/20 focus:outline-none transition @error('password') is-invalid @enderror"
                         placeholder="Minimal 8 karakter">
                     @error('password')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 

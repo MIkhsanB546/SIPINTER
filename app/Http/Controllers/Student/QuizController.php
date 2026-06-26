@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SubmitQuizRequest;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\JawabanSiswa;
-use Illuminate\Http\Request;
 
 class QuizController extends Controller
 {
@@ -63,14 +63,9 @@ class QuizController extends Controller
         return view('student.quiz.show', compact('quiz', 'attempt'));
     }
 
-    public function submit(Request $request, Quiz $quiz, QuizAttempt $attempt)
+    public function submit(SubmitQuizRequest $request, Quiz $quiz, QuizAttempt $attempt)
     {
-        $request->validate([
-            'jawaban' => ['required', 'array'],
-            'jawaban.*' => ['required', 'exists:pilihan_jawaban,id_pilihan_jawaban'],
-        ]);
-
-        $jawaban = $request->input('jawaban');
+        $jawaban = $request->validated()['jawaban'];
         $quiz->load('soal.pilihanJawaban');
 
         $jumlahBenar = 0;

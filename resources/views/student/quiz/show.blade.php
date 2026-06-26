@@ -8,6 +8,16 @@
     <p class="text-gray-500 mt-1">Attempt ke-{{ $attempt->attempt_ke }}</p>
 </div>
 
+@if($errors->any())
+<div class="alert alert-danger mb-6">
+    <ul class="mb-0">
+        @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+
 <form action="{{ route('siswa.quiz.submit', [$quiz, $attempt]) }}" method="post">
     @csrf
 

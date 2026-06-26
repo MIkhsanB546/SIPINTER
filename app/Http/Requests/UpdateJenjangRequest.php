@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class LoginRequest extends FormRequest
+class UpdateJenjangRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,16 +15,14 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'nama_jenjang' => ['required', 'string', 'max:50', Rule::unique('jenjang', 'nama_jenjang')->ignore($this->route('jenjang'), 'id_jenjang')],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'email' => 'Email',
-            'password' => 'Password',
+            'nama_jenjang' => 'Nama Jenjang',
         ];
     }
 }

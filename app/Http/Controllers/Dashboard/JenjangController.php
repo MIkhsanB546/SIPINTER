@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreJenjangRequest;
+use App\Http\Requests\UpdateJenjangRequest;
 use App\Models\Jenjang;
-use Illuminate\Http\Request;
 
 class JenjangController extends Controller
 {
@@ -19,16 +20,9 @@ class JenjangController extends Controller
         return view('dashboard.jenjang.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreJenjangRequest $request)
     {
-        $data = $request->validate([
-            'nama_jenjang' => ['required', 'string', 'max:50', 'unique:jenjang,nama_jenjang'],
-        ], [
-            'nama_jenjang.required' => 'Nama jenjang wajib diisi.',
-            'nama_jenjang.unique' => 'Nama jenjang sudah ada.',
-        ]);
-
-        Jenjang::create($data);
+        Jenjang::create($request->validated());
 
         return redirect()->route('dashboard.jenjang.index')
             ->with('success', 'Jenjang berhasil ditambahkan.');
@@ -39,16 +33,9 @@ class JenjangController extends Controller
         return view('dashboard.jenjang.edit', compact('jenjang'));
     }
 
-    public function update(Request $request, Jenjang $jenjang)
+    public function update(UpdateJenjangRequest $request, Jenjang $jenjang)
     {
-        $data = $request->validate([
-            'nama_jenjang' => ['required', 'string', 'max:50', 'unique:jenjang,nama_jenjang,' . $jenjang->id_jenjang . ',id_jenjang'],
-        ], [
-            'nama_jenjang.required' => 'Nama jenjang wajib diisi.',
-            'nama_jenjang.unique' => 'Nama jenjang sudah ada.',
-        ]);
-
-        $jenjang->update($data);
+        $jenjang->update($request->validated());
 
         return redirect()->route('dashboard.jenjang.index')
             ->with('success', 'Jenjang berhasil diperbarui.');

@@ -9,6 +9,15 @@
             <h5 class="card-title mb-0">Tambah User Baru</h5>
         </div>
         <div class="card-body">
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <form action="{{ route('dashboard.users.store') }}" method="post">
                 @csrf
 

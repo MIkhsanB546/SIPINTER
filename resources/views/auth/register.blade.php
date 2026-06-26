@@ -65,6 +65,9 @@
                                         value="{{ old('name') }}" placeholder="Nama Lengkap" style="border-color: #DDE7EF;">
                                     <label for="regName">Nama</label>
                                 </div>
+                                @error('name')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="input-group mb-3">
@@ -77,6 +80,9 @@
                                         value="{{ old('email') }}" placeholder="name@example.com" style="border-color: #DDE7EF;">
                                     <label for="regEmail">Email</label>
                                 </div>
+                                @error('email')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="input-group mb-3">
@@ -89,6 +95,9 @@
                                         placeholder="Password" style="border-color: #DDE7EF;">
                                     <label for="regPassword">Password</label>
                                 </div>
+                                @error('password')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="input-group mb-3">
@@ -97,7 +106,7 @@
                                 </span>
                                 <div class="form-floating flex-grow-1">
                                     <input id="regPasswordConfirm" name="password_confirmation" type="password"
-                                        class="form-control border-start-0 rounded-end-4"
+                                        class="form-control border-start-0 rounded-end-4 @error('password') is-invalid @enderror"
                                         placeholder="Konfirmasi Password" style="border-color: #DDE7EF;">
                                     <label for="regPasswordConfirm">Konfirmasi Password</label>
                                 </div>
@@ -116,6 +125,9 @@
                                     </select>
                                     <label for="regRole">Daftar sebagai</label>
                                 </div>
+                                @error('role')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <button type="submit" class="btn-si-primary btn w-100 rounded-pill py-2 fw-semibold border-0">

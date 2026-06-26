@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class StoreKategoriMateriRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,16 +14,16 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string'],
+            'nama_kategori' => ['required', 'string', 'max:100', 'unique:kategori_materi,nama_kategori'],
+            'deskripsi' => ['nullable', 'string'],
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'email' => 'Email',
-            'password' => 'Password',
+            'nama_kategori' => 'Nama Kategori',
+            'deskripsi' => 'Deskripsi',
         ];
     }
 }

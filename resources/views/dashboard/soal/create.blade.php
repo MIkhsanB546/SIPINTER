@@ -12,6 +12,15 @@
             </a>
         </div>
         <div class="card-body">
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <form action="{{ route('dashboard.quiz.soal.store', $quiz) }}" method="post">
                 @csrf
 
@@ -43,10 +52,10 @@
                     </div>
                     <div class="form-text">Pilih radio untuk menandai jawaban yang benar.</div>
                     @error('jawaban_benar')
-                    <div class="text-danger small">{{ $message }}</div>
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                     @error('pilihan_jawaban')
-                    <div class="text-danger small">{{ $message }}</div>
+                    <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
 
