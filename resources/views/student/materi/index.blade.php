@@ -69,7 +69,7 @@ $kategoriColors = [
             @php
                 $kategoriNama = $materi->kategori->nama_kategori ?? 'Umum';
                 $gradient = $kategoriColors[$kategoriNama] ?? 'from-indigo-400 to-purple-500';
-                $firstQuiz = $materi->quizzes->first();
+                $firstQuiz = $materi->quiz->first();
             @endphp
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
                 <div class="h-36 bg-gradient-to-br {{ $gradient }} flex items-center justify-center relative overflow-hidden">

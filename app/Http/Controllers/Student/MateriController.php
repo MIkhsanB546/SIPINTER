@@ -29,7 +29,7 @@ class MateriController extends Controller
         }
 
         $materiList = $query
-            ->with(['guru', 'jenjang', 'kategori', 'quizzes'])
+            ->with(['guru', 'jenjang', 'kategori', 'quiz'])
             ->where('is_published', true)
             ->latest()
             ->paginate(12)
@@ -45,7 +45,7 @@ class MateriController extends Controller
     {
         abort_if(!$materi->is_published, 404);
 
-        $materi->load(['guru', 'jenjang', 'kategori', 'quizzes']);
+        $materi->load(['guru', 'jenjang', 'kategori', 'quiz']);
 
         return view('student.materi.show', compact('materi'));
     }

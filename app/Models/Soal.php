@@ -23,7 +23,7 @@ class Soal extends Model
         return $this->belongsTo(Quiz::class, 'id_quiz');
     }
 
-    public function pilihanJawabans()
+    public function pilihanJawaban()
     {
         return $this->hasMany(PilihanJawaban::class, 'id_soal');
     }

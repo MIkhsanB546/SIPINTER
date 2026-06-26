@@ -98,5 +98,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/quiz-history', [StudentQuizController::class, 'history'])->name('quiz.history');
 
         Route::get('/profile', [StudentProfileController::class, 'index'])->name('profile');
+        Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
     });
 });

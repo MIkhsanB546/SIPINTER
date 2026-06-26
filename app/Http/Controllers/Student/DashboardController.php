@@ -11,13 +11,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $siswaId = auth()->id();
+        $siswaId = auth()->user()->id_user;
 
         $totalQuiz = Quiz::whereHas('materi', fn($q) => $q->where('is_published', true))->count();
 
         $attempts = QuizAttempt::where('id_siswa', $siswaId)->get();
 
-        $completedQuiz = $attempts->count();
+        $completedQuiz = QuizAttempt::where('id_siswa', $siswaId)
+            ->distinct()
+            ->count('id_quiz');
         $averageScore = round($attempts->avg('skor_persen') ?? 0, 1);
         $totalStars = (int) $attempts->sum('bintang');
 
@@ -25,9 +27,15 @@ class DashboardController extends Controller
             ? round(($completedQuiz / $totalQuiz) * 100)
             : 0;
 
-        $continueMateri = Materi::with('kategori')
-            ->where('is_published', true)
-            ->latest()
+        $overallProgress = min($overallProgress, 100);
+
+        $unfinishedQuiz = Quiz::whereDoesntHave('quizAttempts', function ($q) use ($siswaId) {
+            $q->where('id_siswa', $siswaId);
+        })
+            ->with([
+                'materi',
+                'materi.kategori'
+            ])
             ->take(3)
             ->get();
 
@@ -50,8 +58,9 @@ class DashboardController extends Controller
             'overallProgress',
             'averageScore',
             'completedQuiz',
+            'totalQuiz',
             'totalStars',
-            'continueMateri',
+            'unfinishedQuiz',
             'recentAttempts',
             'colors',
         ));

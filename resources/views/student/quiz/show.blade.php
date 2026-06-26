@@ -12,7 +12,7 @@
     @csrf
 
     <div class="space-y-6">
-        @foreach ($quiz->soals as $index => $soal)
+        @foreach ($quiz->soal as $index => $soal)
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-all duration-300"
             x-data="{ selected: null }">
             <div class="flex items-start gap-3 mb-4">
@@ -23,7 +23,7 @@
             </div>
 
             <div class="space-y-2 ml-11">
-                @foreach ($soal->pilihanJawabans as $pilihan)
+                @foreach ($soal->pilihanJawaban as $pilihan)
                 <label class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 cursor-pointer transition-all duration-200 hover:bg-indigo-50 hover:border-indigo-200"
                     :class="{ 'bg-indigo-50 border-indigo-300': selected == {{ $pilihan->id_pilihan_jawaban }} }">
                     <input type="radio"

@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            @php $firstQuiz = $materi->quizzes->first(); @endphp
+            @php $firstQuiz = $materi->quiz->first(); @endphp
             @if ($firstQuiz)
             <div class="mt-4">
                 <div class="card bg-light">

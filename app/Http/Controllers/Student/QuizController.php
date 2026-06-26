@@ -58,7 +58,7 @@ class QuizController extends Controller
             'attempt_ke' => $attemptKe,
         ]);
 
-        $quiz->load('soals.pilihanJawabans');
+        $quiz->load('soal.pilihanJawaban');
 
         return view('student.quiz.show', compact('quiz', 'attempt'));
     }
@@ -71,17 +71,17 @@ class QuizController extends Controller
         ]);
 
         $jawaban = $request->input('jawaban');
-        $quiz->load('soals.pilihanJawabans');
+        $quiz->load('soal.pilihanJawaban');
 
         $jumlahBenar = 0;
-        $jumlahSoal = $quiz->soals->count();
+        $jumlahSoal = $quiz->soal->count();
 
-        foreach ($quiz->soals as $soal) {
+        foreach ($quiz->soal as $soal) {
             $pilihanId = $jawaban[$soal->id_soal] ?? null;
 
             if (!$pilihanId) continue;
 
-            $isCorrect = $soal->pilihanJawabans()
+            $isCorrect = $soal->pilihanJawaban()
                 ->where('id_pilihan_jawaban', $pilihanId)
                 ->value('is_correct');
 
@@ -119,7 +119,7 @@ class QuizController extends Controller
 
     public function result(Quiz $quiz, QuizAttempt $attempt)
     {
-        $attempt->load(['jawabanSiswa.soal.pilihanJawabans', 'quiz.materi']);
+        $attempt->load(['jawabanSiswa.soal.pilihanJawaban', 'quiz.materi']);
         return view('student.quiz.result', compact('quiz', 'attempt'));
     }
 

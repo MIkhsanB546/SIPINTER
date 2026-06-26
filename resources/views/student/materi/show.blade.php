@@ -58,7 +58,7 @@ $gradient = $kategoriColors[$materi->kategori->nama_kategori ?? ''] ?? 'from-ind
                     </a>
                     @endif
 
-                    @php $firstQuiz = $materi->quizzes->first(); @endphp
+                    @php $firstQuiz = $materi->quiz->first(); @endphp
                     @if ($firstQuiz)
                     <a href="{{ route('siswa.quiz.start', $firstQuiz) }}"
                         class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-xl text-sm font-semibold hover:bg-emerald-700 transition-colors shadow-sm">

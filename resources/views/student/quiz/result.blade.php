@@ -63,7 +63,7 @@
                     <p class="font-semibold text-gray-900 pt-1">{{ $jawaban->soal->pertanyaan }}</p>
                 </div>
                 <div class="ml-11 space-y-1">
-                    @foreach ($jawaban->soal->pilihanJawabans as $pilihan)
+                    @foreach ($jawaban->soal->pilihanJawaban as $pilihan)
                     <div class="flex items-center gap-2 p-2 rounded-lg text-sm
                         {{ $pilihan->is_correct ? 'bg-emerald-50 text-emerald-700 font-semibold' : '' }}
                         {{ $pilihan->id_pilihan_jawaban === $jawaban->id_pilihan_jawaban && !$pilihan->is_correct ? 'bg-red-50 text-red-700' : '' }}">

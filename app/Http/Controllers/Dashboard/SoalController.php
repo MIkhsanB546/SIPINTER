@@ -13,7 +13,7 @@ class SoalController extends Controller
     public function index(Quiz $quiz)
     {
         $this->authorize('view', $quiz);
-        $quiz->load('soals.pilihanJawabans');
+        $quiz->load('soal.pilihanJawaban');
         return view('dashboard.soal.index', compact('quiz'));
     }
 
@@ -51,7 +51,7 @@ class SoalController extends Controller
     public function edit(Quiz $quiz, Soal $soal)
     {
         $this->authorize('update', $quiz);
-        $soal->load('pilihanJawabans');
+        $soal->load('pilihanJawaban');
         return view('dashboard.soal.edit', compact('quiz', 'soal'));
     }
 
@@ -65,7 +65,7 @@ class SoalController extends Controller
             'pertanyaan' => $data['pertanyaan'],
         ]);
 
-        $soal->pilihanJawabans()->delete();
+        $soal->pilihanJawaban()->delete();
 
         $jawabanBenarIndex = (int) $data['jawaban_benar'];
 

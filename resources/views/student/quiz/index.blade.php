@@ -19,7 +19,7 @@
                     <i class="bi bi-clock me-1"></i> {{ $item->quiz->durasi_menit ?? 'Tidak terbatas' }} menit
                 </span>
                 <span class="inline-flex items-center text-xs text-gray-500">
-                    <i class="bi bi-question-circle me-1"></i> {{ $item->quiz->soals->count() }} soal
+                    <i class="bi bi-question-circle me-1"></i> {{ $item->quiz->soal->count() }} soal
                 </span>
                 @if ($item->has_completed)
                 <span class="inline-flex items-center text-xs text-emerald-600">

@@ -28,7 +28,7 @@
                 <div class="mb-3">
                     <label class="form-label">Pilihan Jawaban</label>
                     <div id="pilihanContainer">
-                        @foreach ($soal->pilihanJawabans as $pilihan)
+                        @foreach ($soal->pilihanJawaban as $pilihan)
                         <div class="input-group mb-2">
                             <div class="input-group-text">
                                 <input type="radio" name="jawaban_benar" value="{{ $loop->index }}"

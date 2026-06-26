@@ -42,7 +42,7 @@ class Materi extends Model
         );
     }
 
-    public function quizzes()
+    public function quiz()
     {
         return $this->hasMany(Quiz::class, 'id_materi');
     }
