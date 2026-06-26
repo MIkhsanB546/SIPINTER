@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Materi;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
@@ -20,14 +21,6 @@ class LaporanController extends Controller
         $totalAttempts = QuizAttempt::count();
         $rataNilai = round(QuizAttempt::avg('skor_persen') ?? 0, 1);
 
-        // $topMateri = Materi::select('materi.*', DB::raw('COUNT(quiz_attempts.id_quiz_attempt) as attempt_count'))
-        //     ->leftJoin('quiz', 'quiz.id_materi', '=', 'materi.id_materi')
-        //     ->leftJoin('quiz_attempts', 'quiz_attempts.id_quiz', '=', 'quiz.id_quiz')
-        //     ->groupBy('materi.id_materi')
-        //     ->orderByDesc('attempt_count')
-        //     ->take(5)
-        //     ->get();
-
         $topMateri = Materi::with('guru')
             ->select('materi.*')
             ->selectSub(function ($query) {
@@ -39,7 +32,53 @@ class LaporanController extends Controller
             ->orderByDesc('attempt_count')
             ->limit(5)
             ->get();
-        // dd($topMateri->first());
+
+        $recentAttempts = QuizAttempt::with(['siswa', 'quiz.materi'])
+            ->orderBy('tanggal_pengerjaan', 'desc')
+            ->take(10)
+            ->get();
+
+        $topSiswa = User::siswa()
+            ->select('users.*')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'quiz_dikerjakan')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(ROUND(AVG(skor_persen), 1), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'rata_rata_nilai')
+            ->havingRaw('quiz_dikerjakan > 0')
+            ->orderByDesc('rata_rata_nilai')
+            ->take(5)
+            ->get();
+
+        $siswaProgress = User::siswa()
+            ->select('users.*')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'quiz_dikerjakan')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(ROUND(AVG(skor_persen), 1), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'rata_rata_nilai')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(MAX(skor_persen), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'nilai_tertinggi')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(MIN(skor_persen), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'nilai_terendah')
+            ->orderBy('users.name')
+            ->get();
 
         return view('dashboard.laporan.index', compact(
             'totalGuru',
@@ -48,7 +87,98 @@ class LaporanController extends Controller
             'totalQuiz',
             'totalAttempts',
             'rataNilai',
-            'topMateri'
+            'topMateri',
+            'recentAttempts',
+            'topSiswa',
+            'siswaProgress'
         ));
+    }
+
+    public function exportPenggunaPdf()
+    {
+        $users = User::orderBy('created_at')->get();
+
+        $logoPath = public_path('images/sipinter-logo.png');
+        $logoBase64 = file_exists($logoPath) ? base64_encode(file_get_contents($logoPath)) : null;
+
+        $html = view('dashboard.laporan.pdf.pengguna', compact('users', 'logoBase64'))->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+        return response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="laporan_pengguna.pdf"',
+        ]);
+    }
+
+    public function exportMateriPdf()
+    {
+        $materiList = Materi::with(['guru', 'jenjang', 'kategori'])
+            ->orderBy('judul')
+            ->get();
+
+        $logoPath = public_path('images/sipinter-logo.png');
+        $logoBase64 = file_exists($logoPath) ? base64_encode(file_get_contents($logoPath)) : null;
+
+        $html = view('dashboard.laporan.pdf.materi', compact('materiList', 'logoBase64'))->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+        return response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="laporan_materi.pdf"',
+        ]);
+    }
+
+    public function exportProgressPdf()
+    {
+        $siswaProgress = User::siswa()
+            ->select('users.*')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COUNT(*)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'quiz_dikerjakan')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(ROUND(AVG(skor_persen), 1), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'rata_rata_nilai')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(MAX(skor_persen), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'nilai_tertinggi')
+            ->selectSub(function ($query) {
+                $query->from('quiz_attempts')
+                    ->selectRaw('COALESCE(MIN(skor_persen), 0)')
+                    ->whereColumn('id_siswa', 'users.id_user');
+            }, 'nilai_terendah')
+            ->orderBy('users.name')
+            ->get();
+
+        $logoPath = public_path('images/sipinter-logo.png');
+        $logoBase64 = file_exists($logoPath) ? base64_encode(file_get_contents($logoPath)) : null;
+
+        $html = view('dashboard.laporan.pdf.progress', compact('siswaProgress', 'logoBase64'))->render();
+
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->render();
+
+        $output = $dompdf->output();
+        return response($output, 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="laporan_progress_siswa.pdf"',
+        ]);
     }
 }

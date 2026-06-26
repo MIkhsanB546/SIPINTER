@@ -76,6 +76,9 @@ Route::middleware('auth')->group(function () {
                 'kategori' => 'kategori'
             ]);
             Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+            Route::get('/laporan/export-pengguna', [LaporanController::class, 'exportPenggunaPdf'])->name('laporan.export-pengguna');
+            Route::get('/laporan/export-materi', [LaporanController::class, 'exportMateriPdf'])->name('laporan.export-materi');
+            Route::get('/laporan/export-progress', [LaporanController::class, 'exportProgressPdf'])->name('laporan.export-progress');
         });
     });
 
