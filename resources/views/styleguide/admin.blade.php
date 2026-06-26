@@ -98,7 +98,7 @@
                 <div class="sg-preview-body">
                     <h3 class="mb-0 fw-bold" style="color:var(--si-text-dark)">Dashboard — h3.mb-0 (judul halaman)</h3>
                     <hr class="my-3">
-                    <h5 class="card-title mb-0">Judul Card — h5.card-title</h5>
+                    <h3 class="card-title">Judul Card — h3.card-title</h3>
                     <hr class="my-3">
                     <p class="text-muted mb-1">Jumlah Materi — teks label statistik</p>
                     <hr class="my-3">
@@ -135,7 +135,9 @@
                     <div class="btn-group btn-group-sm">
                         <a href="#" class="btn btn-info" title="Lihat"><i class="bi bi-eye"></i></a>
                         <a href="#" class="btn btn-warning" title="Edit"><i class="bi bi-pencil"></i></a>
-                        <button class="btn btn-danger" title="Hapus"><i class="bi bi-trash"></i></button>
+                        <form class="m-0 p-0">
+                            <button class="btn btn-danger" title="Hapus"><i class="bi bi-trash"></i></button>
+                        </form>
                     </div>
 
                     <p class="sg-sub mt-3">Tombol Form (Simpan &amp; Batal)</p>
@@ -145,7 +147,13 @@
                     </div>
 
                     <div class="sg-code mt-3"><code>&lt;a href="#" class="btn btn-primary btn-sm"&gt;&lt;i class="bi bi-plus-lg"&gt;&lt;/i&gt; Tambah&lt;/a&gt;
-        &lt;div class="btn-group btn-group-sm"&gt; ... &lt;/div&gt;</code></div>
+        &lt;div class="btn-group btn-group-sm"&gt;
+            &lt;a class="btn btn-info"&gt;&lt;i class="bi bi-eye"&gt;&lt;/i&gt;&lt;/a&gt;
+            &lt;a class="btn btn-warning"&gt;&lt;i class="bi bi-pencil"&gt;&lt;/i&gt;&lt;/a&gt;
+            &lt;form class="m-0 p-0"&gt;
+                &lt;button class="btn btn-danger"&gt;&lt;i class="bi bi-trash"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;/form&gt;
+        &lt;/div&gt;</code></div>
                 </div>
             </div>
         </section>
@@ -198,7 +206,17 @@
                 <div class="col-md-6">
                     <p class="sg-sub">Kartu dengan Tabel (card-body p-0)</p>
                     <div class="card sg-inner-card">
-                        <div class="card-header"><h3 class="card-title">Daftar Data</h3></div>
+                        <div class="card-header">
+                            <h3 class="card-title">Daftar Data</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 200px;">
+                                    <input type="text" class="form-control" placeholder="Cari...">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card-body p-0">
                             <table class="table table-bordered table-hover mb-0">
                                 <thead><tr><th>No</th><th>Nama</th><th>Status</th></tr></thead>
@@ -238,11 +256,17 @@
                 <div class="card-header">
                     <h3 class="card-title">Daftar Materi</h3>
                     <div class="card-tools">
+                        <div class="input-group input-group-sm me-2" style="width: 200px;">
+                            <input type="text" class="form-control" placeholder="Cari..." id="sgSearch">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
                         <a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Tambah</a>
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <table class="table table-bordered table-hover mb-0 align-middle">
+                    <table class="table table-bordered table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -262,11 +286,13 @@
                                 <td>SD</td>
                                 <td>Matematika</td>
                                 <td><span class="badge bg-success">Published</span></td>
-                                <td>
+                                <td class="text-center">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="#" class="btn btn-info"><i class="bi bi-eye"></i></a>
-                                        <a href="#" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
-                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                        <a href="#" class="btn btn-info" title="Lihat"><i class="bi bi-eye"></i></a>
+                                        <a href="#" class="btn btn-warning" title="Edit"><i class="bi bi-pencil"></i></a>
+                                        <form class="m-0 p-0">
+                                            <button class="btn btn-danger" title="Hapus"><i class="bi bi-trash"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -277,11 +303,13 @@
                                 <td>SMP</td>
                                 <td>IPA</td>
                                 <td><span class="badge bg-secondary">Draft</span></td>
-                                <td>
+                                <td class="text-center">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="#" class="btn btn-info"><i class="bi bi-eye"></i></a>
-                                        <a href="#" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
-                                        <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                        <a href="#" class="btn btn-info" title="Lihat"><i class="bi bi-eye"></i></a>
+                                        <a href="#" class="btn btn-warning" title="Edit"><i class="bi bi-pencil"></i></a>
+                                        <form class="m-0 p-0">
+                                            <button class="btn btn-danger" title="Hapus"><i class="bi bi-trash"></i></button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>
@@ -290,17 +318,62 @@
                 </div>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <small class="text-muted">Menampilkan 1-2 dari 2 entri</small>
-                    <nav>
-                        <ul class="pagination pagination-sm mb-0">
-                            <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">&laquo; Previous</a>
+                            </li>
                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#">&raquo;</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next &raquo;</a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
             </div>
 
-            <div class="sg-code mt-3"><code>&lt;div class="card"&gt;&lt;div class="card-header"&gt;&lt;h3 class="card-title"&gt;Daftar Materi&lt;/h3&gt;&lt;div class="card-tools"&gt;&lt;a href="#" class="btn btn-primary btn-sm"&gt;&lt;i class="bi bi-plus-lg"&gt;&lt;/i&gt; Tambah&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="card-body p-0"&gt;&lt;table class="table table-bordered table-hover mb-0"&gt;...&lt;/table&gt;&lt;/div&gt;&lt;/div&gt;</code></div>
+            <div class="sg-code mt-3"><code>&lt;div class="card"&gt;
+    &lt;div class="card-header"&gt;
+        &lt;h3 class="card-title"&gt;Daftar Materi&lt;/h3&gt;
+        &lt;div class="card-tools"&gt;
+            &lt;div class="input-group input-group-sm me-2" style="width:200px"&gt;
+                &lt;input type="text" class="form-control" placeholder="Cari..."&gt;
+                &lt;button class="btn btn-outline-secondary"&gt;&lt;i class="bi bi-search"&gt;&lt;/i&gt;&lt;/button&gt;
+            &lt;/div&gt;
+            &lt;a href="#" class="btn btn-primary btn-sm"&gt;&lt;i class="bi bi-plus-lg"&gt;&lt;/i&gt; Tambah&lt;/a&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="card-body p-0"&gt;
+        &lt;table class="table table-bordered table-hover mb-0"&gt;
+            &lt;thead&gt;&lt;tr&gt;&lt;th&gt;No&lt;/th&gt;&lt;th&gt;Nama&lt;/th&gt;&lt;th&gt;Aksi&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+            &lt;tbody&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;1&lt;/td&gt;
+                    &lt;td&gt;Contoh&lt;/td&gt;
+                    &lt;td class="text-center"&gt;
+                        &lt;div class="btn-group btn-group-sm"&gt;
+                            &lt;a class="btn btn-info"&gt;&lt;i class="bi bi-eye"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;a class="btn btn-warning"&gt;&lt;i class="bi bi-pencil"&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;form class="m-0 p-0"&gt;
+                                &lt;button class="btn btn-danger"&gt;&lt;i class="bi bi-trash"&gt;&lt;/i&gt;&lt;/button&gt;
+                            &lt;/form&gt;
+                        &lt;/div&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;/tbody&gt;
+        &lt;/table&gt;
+        &lt;nav aria-label="Page navigation" class="p-2"&gt;
+            &lt;ul class="pagination mb-0"&gt;
+                &lt;li class="page-item disabled"&gt;&lt;a class="page-link" href="#"&gt;&amp;laquo; Previous&lt;/a&gt;&lt;/li&gt;
+                &lt;li class="page-item active"&gt;&lt;a class="page-link" href="#"&gt;1&lt;/a&gt;&lt;/li&gt;
+                &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;2&lt;/a&gt;&lt;/li&gt;
+                &lt;li class="page-item"&gt;&lt;a class="page-link" href="#"&gt;Next &amp;raquo;&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/nav&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></div>
 
             <p class="sg-sub mt-4">Role Badge pada Tabel User</p>
             <div class="d-flex gap-2 flex-wrap">
