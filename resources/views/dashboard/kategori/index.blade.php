@@ -7,11 +7,13 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header d-flex align-items-center justify-content-between">
+                <div class="card-header">
                     <h5 class="card-title mb-0">Daftar Kategori Materi</h5>
-                    <a href="{{ route('dashboard.kategori.create') }}" class="btn btn-primary">
-                        <i class="bi bi-plus-lg"></i> Tambah Kategori
-                    </a>
+                    <div class="card-tools">
+                        <a href="{{ route('dashboard.kategori.create') }}" class="btn btn-primary btn-sm">
+                            <i class="bi bi-plus-lg"></i> Tambah Kategori
+                        </a>
+                    </div>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">

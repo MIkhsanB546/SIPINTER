@@ -19,11 +19,13 @@
     @endif
 
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header">
             <h5 class="card-title mb-0">Daftar User</h5>
-            <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> Tambah User
-            </a>
+            <div class="card-tools">
+                <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg"></i> Tambah User
+                </a>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">

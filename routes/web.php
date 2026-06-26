@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
 
         Route::get('/profile', [DashboardProfileController::class, 'index'])->name('profile');
+        Route::put('/profile', [DashboardProfileController::class, 'update'])->name('profile.update');
 
         Route::resource('materi', DashboardMateriController::class)->parameters([
             'materi' => 'materi'

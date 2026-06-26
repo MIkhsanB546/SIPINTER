@@ -12,11 +12,13 @@
     @endif
 
     <div class="card">
-        <div class="card-header d-flex align-items-center justify-content-between">
+        <div class="card-header">
             <h5 class="card-title mb-0">Daftar Materi</h5>
-            <a href="{{ route('dashboard.materi.create') }}" class="btn btn-primary">
-                <i class="bi bi-plus-lg"></i> Tambah Materi
-            </a>
+            <div class="card-tools">
+                <a href="{{ route('dashboard.materi.create') }}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-lg"></i> Tambah Materi
+                </a>
+            </div>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
