@@ -17,7 +17,10 @@ use App\Http\Controllers\Student\DashboardController as StudentDashboardControll
 use App\Http\Controllers\Student\MateriController as StudentMateriController;
 use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
+use App\Http\Controllers\StyleGuideController;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/styleguide', [StyleGuideController::class, 'index'])->name('styleguide');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');

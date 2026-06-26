@@ -57,35 +57,58 @@
             --si-text-dark: #1E293B;
             --si-muted: #64748B;
         }
-        .text-si-primary { color: var(--si-primary) !important; }
-        .bg-si-primary { background-color: var(--si-primary) !important; }
-        .border-si-primary { border-color: var(--si-primary) !important; }
+
+        .text-si-primary {
+            color: var(--si-primary) !important;
+        }
+
+        .bg-si-primary {
+            background-color: var(--si-primary) !important;
+        }
+
+        .border-si-primary {
+            border-color: var(--si-primary) !important;
+        }
+
         .btn-si-primary {
             color: #fff;
             background-color: var(--si-primary);
             border-color: var(--si-primary);
         }
+
         .btn-si-primary:hover {
             color: #fff;
             background-color: var(--si-primary-hover);
             border-color: var(--si-primary-hover);
         }
+
         .btn-outline-si-primary {
             color: var(--si-primary);
             border-color: var(--si-primary);
         }
+
         .btn-outline-si-primary:hover {
             color: #fff;
             background-color: var(--si-primary);
             border-color: var(--si-primary);
         }
-        a.text-si-primary:hover { color: var(--si-primary-hover) !important; }
-        .sidebar-brand-logo { display: flex; align-items: center; gap: 0.5rem; }
+
+        a.text-si-primary:hover {
+            color: var(--si-primary-hover) !important;
+        }
+
+        .sidebar-brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
     </style>
 
     <!--begin::Third Party Plugin(DataTables)-->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/dataTables.bootstrap5.min.css"
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css"
+        crossorigin="anonymous" />
     <!--end::Third Party Plugin(DataTables)-->
 
     @stack('styles')
@@ -318,7 +341,7 @@
             <div class="float-end d-none d-sm-inline">Anything you want</div>
             <!--end::To the end-->
             <!--begin::Copyright-->
-                &copy; 2026 SIPINTER
+            &copy; 2026 SIPINTER
             <!--end::Copyright-->
         </footer>
         <!--end::Footer-->
@@ -436,8 +459,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.13.11/js/dataTables.bootstrap5.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js" crossorigin="anonymous">
+    </script>
     <!--end::Third Party Plugin(DataTables)-->
 
     <!--end::Script-->
