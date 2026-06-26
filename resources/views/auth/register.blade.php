@@ -1,198 +1,143 @@
+<!doctype html>
+<html lang="id">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>@yield('title', 'EduGrow')</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
-
-    <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="./css/adminlte.css" as="style" />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
-        integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print"
-        onload="this.media = 'all'" />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
-        crossorigin="anonymous" />
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-        crossorigin="anonymous" />
-
-    <link rel="stylesheet" href="{{ asset('admin-lte/dist/css/adminlte.css') }}" />
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Daftar — SIPINTER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous">
+    <style>
+        :root {
+            --si-primary: #095890;
+            --si-primary-hover: #0A6AAE;
+            --si-light-bg: #F5F9FC;
+            --si-border: #DDE7EF;
+            --si-text-dark: #1E293B;
+            --si-muted: #64748B;
+        }
+        .btn-si-primary {
+            color: #fff;
+            background-color: var(--si-primary);
+            border-color: var(--si-primary);
+        }
+        .btn-si-primary:hover {
+            color: #fff;
+            background-color: var(--si-primary-hover);
+            border-color: var(--si-primary-hover);
+        }
+    </style>
     @stack('styles')
 </head>
+<body class="d-flex align-items-center min-vh-100" style="background-color: #F5F9FC;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-10 col-md-6 col-lg-4">
 
-<body class="login-page bg-body-secondary">
-    <div class="login-box">
-        <div class="card card-outline card-primary">
-            <div class="card-header">
-                <a href="{{ route('register') }}"
-                    class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                    <h1 class="mb-0"><b>Edu</b>Grow</h1>
-                </a>
-            </div>
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Daftar akun baru</p>
+                <div class="text-center mb-4">
+                    <img src="{{ asset('images/sipinter-logo.png') }}" alt="SIPINTER" height="100">
+                    <h1 class="mt-3 fw-bold" style="color: #095890;">SIPINTER</h1>
+                    <p class="mb-0" style="color: #64748B;">Belajar Interaktif dan Menyenangkan</p>
+                </div>
 
-                @if ($errors->any())
-                    <div class="alert alert-danger" role="alert">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <div class="card border-0 shadow rounded-4" style="background-color: #FFFFFF;">
+                    <div class="card-body p-4">
 
-                <form action="{{ route('register') }}" method="post">
-                    @csrf
-                    <div class="input-group mb-1">
-                        <div class="form-floating">
-                            <input id="regName" name="name" type="text" class="form-control"
-                                value="{{ old('name') }}" placeholder="" />
-                            <label for="regName">Nama</label>
-                        </div>
-                        <div class="input-group-text">
-                            <span class="bi bi-person"></span>
-                        </div>
-                    </div>
-                    <div class="input-group mb-1">
-                        <div class="form-floating">
-                            <input id="regEmail" name="email" type="email" class="form-control"
-                                value="{{ old('email') }}" placeholder="" />
-                            <label for="regEmail">Email</label>
-                        </div>
-                        <div class="input-group-text">
-                            <span class="bi bi-envelope"></span>
-                        </div>
-                    </div>
-                    <div class="input-group mb-1">
-                        <div class="form-floating">
-                            <input id="regPassword" name="password" type="password" class="form-control"
-                                placeholder="" />
-                            <label for="regPassword">Password</label>
-                        </div>
-                        <div class="input-group-text">
-                            <span class="bi bi-lock-fill"></span>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
-                        <div class="form-floating">
-                            <select id="regRole" name="role" class="form-select">
-                                <option value="guru" {{ old('role') === 'guru' ? 'selected' : '' }}>Guru</option>
-                                <option value="siswa" {{ old('role') === 'siswa' ? 'selected' : '' }}>Siswa</option>
-                            </select>
-                            <label for="regRole">Daftar sebagai</label>
-                        </div>
-                        <div class="input-group-text">
-                            <span class="bi bi-person-badge"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Daftar</button>
+                        @if ($errors->any())
+                            <div class="alert alert-danger rounded-3 py-2 ps-3 pe-2 mb-3" role="alert">
+                                <ul class="mb-0 ps-3">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        </div>
-                    </div>
-                </form>
+                        @endif
 
-                <p class="mb-1 mt-3 text-center">
-                    <a href="{{ route('login') }}">Sudah punya akun? Masuk</a>
-                </p>
+                        <form action="{{ route('register') }}" method="post">
+                            @csrf
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-person" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <input id="regName" name="name" type="text"
+                                        class="form-control border-start-0 rounded-end-4 @error('name') is-invalid @enderror"
+                                        value="{{ old('name') }}" placeholder="Nama Lengkap" style="border-color: #DDE7EF;">
+                                    <label for="regName">Nama</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-envelope" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <input id="regEmail" name="email" type="email"
+                                        class="form-control border-start-0 rounded-end-4 @error('email') is-invalid @enderror"
+                                        value="{{ old('email') }}" placeholder="name@example.com" style="border-color: #DDE7EF;">
+                                    <label for="regEmail">Email</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-lock-fill" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <input id="regPassword" name="password" type="password"
+                                        class="form-control border-start-0 rounded-end-4 @error('password') is-invalid @enderror"
+                                        placeholder="Password" style="border-color: #DDE7EF;">
+                                    <label for="regPassword">Password</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-lock" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <input id="regPasswordConfirm" name="password_confirmation" type="password"
+                                        class="form-control border-start-0 rounded-end-4"
+                                        placeholder="Konfirmasi Password" style="border-color: #DDE7EF;">
+                                    <label for="regPasswordConfirm">Konfirmasi Password</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-4">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-person-badge" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <select id="regRole" name="role"
+                                        class="form-select border-start-0 rounded-end-4 @error('role') is-invalid @enderror"
+                                        style="border-color: #DDE7EF;">
+                                        <option value="guru" {{ old('role') === 'guru' ? 'selected' : '' }}>Guru</option>
+                                        <option value="siswa" {{ old('role') === 'siswa' ? 'selected' : '' }}>Siswa</option>
+                                    </select>
+                                    <label for="regRole">Daftar sebagai</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-si-primary btn w-100 rounded-pill py-2 fw-semibold border-0">
+                                Daftar
+                            </button>
+                        </form>
+
+                        <p class="text-center mt-4 mb-0" style="color: #64748B;">
+                            Sudah punya akun?
+                            <a href="{{ route('login') }}" class="fw-semibold text-decoration-none" style="color: #095890;">Masuk</a>
+                        </p>
+
+                    </div>
+                </div>
+
+                <p class="text-center small mt-4" style="color: #64748B;">&copy; 2026 SIPINTER</p>
 
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <script src="{{ asset('admin-lte/dist/js/adminlte.js') }}"></script>
-    <script>
-        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-        const Default = {
-            scrollbarTheme: 'os-theme-light',
-            scrollbarAutoHide: 'leave',
-            scrollbarClickScroll: true,
-        };
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
-            const isMobile = window.innerWidth <= 992;
-            if (
-                sidebarWrapper &&
-                OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
-                !isMobile
-            ) {
-                OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-                    scrollbars: {
-                        theme: Default.scrollbarTheme,
-                        autoHide: Default.scrollbarAutoHide,
-                        clickScroll: Default.scrollbarClickScroll,
-                    },
-                });
-            }
-        });
-    </script>
-    <script>
-        (() => {
-            'use strict';
-            const STORAGE_KEY = 'lte-theme';
-            const getStoredTheme = () => localStorage.getItem(STORAGE_KEY);
-            const setStoredTheme = (theme) => localStorage.setItem(STORAGE_KEY, theme);
-            const prefersDark = () => globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
-            const getPreferredTheme = () => {
-                const stored = getStoredTheme();
-                if (stored) return stored;
-                return prefersDark() ? 'dark' : 'light';
-            };
-            const setTheme = (theme) => {
-                const resolved = theme === 'auto' ? (prefersDark() ? 'dark' : 'light') : theme;
-                document.documentElement.setAttribute('data-bs-theme', resolved);
-            };
-            setTheme(getPreferredTheme());
-            const showActiveTheme = (theme) => {
-                document.querySelectorAll('[data-bs-theme-value]').forEach((el) => {
-                    el.classList.remove('active');
-                    el.setAttribute('aria-pressed', 'false');
-                    const check = el.querySelector('.bi-check-lg');
-                    if (check) check.classList.add('d-none');
-                });
-                const active = document.querySelector(`[data-bs-theme-value="${theme}"]`);
-                if (active) {
-                    active.classList.add('active');
-                    active.setAttribute('aria-pressed', 'true');
-                    const check = active.querySelector('.bi-check-lg');
-                    if (check) check.classList.remove('d-none');
-                }
-                document.querySelectorAll('[data-lte-theme-icon]').forEach((icon) => {
-                    icon.classList.toggle('d-none', icon.dataset.lteThemeIcon !== theme);
-                });
-            };
-            globalThis.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                const stored = getStoredTheme();
-                if (!stored || stored === 'auto') setTheme(getPreferredTheme());
-            });
-            document.addEventListener('DOMContentLoaded', () => {
-                showActiveTheme(getPreferredTheme());
-                document.querySelectorAll('[data-bs-theme-value]').forEach((toggle) => {
-                    toggle.addEventListener('click', () => {
-                        const theme = toggle.getAttribute('data-bs-theme-value');
-                        setStoredTheme(theme);
-                        setTheme(theme);
-                        showActiveTheme(theme);
-                    });
-                });
-            });
-        })();
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     @stack('scripts')
 </body>
-
 </html>

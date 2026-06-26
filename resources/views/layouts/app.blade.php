@@ -4,7 +4,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>@yield('title', 'EduGrow')</title>
+    <title>@yield('title', 'SIPINTER')</title>
 
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
@@ -48,6 +48,40 @@
     <link rel="stylesheet" href="{{ asset('admin-lte/dist/css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
 
+    <style>
+        :root {
+            --si-primary: #095890;
+            --si-primary-hover: #0A6AAE;
+            --si-light-bg: #F5F9FC;
+            --si-border: #DDE7EF;
+            --si-text-dark: #1E293B;
+            --si-muted: #64748B;
+        }
+        .text-si-primary { color: var(--si-primary) !important; }
+        .bg-si-primary { background-color: var(--si-primary) !important; }
+        .border-si-primary { border-color: var(--si-primary) !important; }
+        .btn-si-primary {
+            color: #fff;
+            background-color: var(--si-primary);
+            border-color: var(--si-primary);
+        }
+        .btn-si-primary:hover {
+            color: #fff;
+            background-color: var(--si-primary-hover);
+            border-color: var(--si-primary-hover);
+        }
+        .btn-outline-si-primary {
+            color: var(--si-primary);
+            border-color: var(--si-primary);
+        }
+        .btn-outline-si-primary:hover {
+            color: #fff;
+            background-color: var(--si-primary);
+            border-color: var(--si-primary);
+        }
+        a.text-si-primary:hover { color: var(--si-primary-hover) !important; }
+        .sidebar-brand-logo { display: flex; align-items: center; gap: 0.5rem; }
+    </style>
     @stack('styles')
 </head>
 <!--end::Head-->
@@ -152,10 +186,9 @@
             <!--begin::Sidebar Brand-->
             <div class="sidebar-brand">
                 <!--begin::Brand Link-->
-                <a href="{{ route('dashboard.index') }}" class="brand-link">
-                    <!--begin::Brand Text-->
+                <a href="{{ route('dashboard.index') }}" class="brand-link sidebar-brand-logo">
+                    <img src="{{ asset('images/sipinter-logo.png') }}" alt="SIPINTER" height="40">
                     <span class="brand-text fw-light">SIPINTER</span>
-                    <!--end::Brand Text-->
                 </a>
                 <!--end::Brand Link-->
             </div>
@@ -279,11 +312,7 @@
             <div class="float-end d-none d-sm-inline">Anything you want</div>
             <!--end::To the end-->
             <!--begin::Copyright-->
-            <strong>
-                Copyright &copy; 2014-2026&nbsp;
-                <a href="https://adminlte.io" class="text-decoration-none">AdminLTE.io</a>.
-            </strong>
-            All rights reserved.
+                &copy; 2026 SIPINTER
             <!--end::Copyright-->
         </footer>
         <!--end::Footer-->

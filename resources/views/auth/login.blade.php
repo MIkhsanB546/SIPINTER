@@ -1,222 +1,112 @@
+<!doctype html>
+<html lang="id">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>@yield('title', 'EduGrow')</title>
-
-    <!--begin::Accessibility Meta Tags-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
-    <!--end::Accessibility Meta Tags-->
-
-    <!--begin::Primary Meta Tags-->
-    {{-- <meta name="title" content="AdminLTE v4 | Dashboard" />
-    <meta name="author" content="ColorlibHQ" />
-    <meta name="description"
-        content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance." />
-    <meta name="keywords"
-        content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant" /> --}}
-    <!--end::Primary Meta Tags-->
-
-    <!--begin::Accessibility Features-->
-    <!-- Skip links will be dynamically added by accessibility.js -->
-    <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="./css/adminlte.css" as="style" />
-    <!--end::Accessibility Features-->
-
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
-        integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print"
-        onload="this.media = 'all'" />
-    <!--end::Fonts-->
-
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
-        crossorigin="anonymous" />
-    <!--end::Third Party Plugin(OverlayScrollbars)-->
-
-    <!--begin::Third Party Plugin(Bootstrap Icons)-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Masuk — SIPINTER</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
-        crossorigin="anonymous" />
-    <!--end::Third Party Plugin(Bootstrap Icons)-->
-
-    <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{ asset('admin-lte/dist/css/adminlte.css') }}" />
-    <!--end::Required Plugin(AdminLTE)-->
-
+        crossorigin="anonymous">
+    <style>
+        :root {
+            --si-primary: #095890;
+            --si-primary-hover: #0A6AAE;
+            --si-light-bg: #F5F9FC;
+            --si-border: #DDE7EF;
+            --si-text-dark: #1E293B;
+            --si-muted: #64748B;
+        }
+        .text-si-primary { color: var(--si-primary) !important; }
+        .bg-si-primary { background-color: var(--si-primary) !important; }
+        .border-si-primary { border-color: var(--si-primary) !important; }
+        .btn-si-primary {
+            color: #fff;
+            background-color: var(--si-primary);
+            border-color: var(--si-primary);
+        }
+        .btn-si-primary:hover {
+            color: #fff;
+            background-color: var(--si-primary-hover);
+            border-color: var(--si-primary-hover);
+        }
+        a.text-si-primary:hover { color: var(--si-primary-hover) !important; }
+    </style>
     @stack('styles')
 </head>
-<!--end::Head-->
-<!--begin::Body-->
 
-<body class="login-page bg-body-secondary">
-    <div class="login-box">
-        <div class="card card-outline card-primary">
-            <div class="card-header">
-                <a href="../index2.html"
-                    class="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                    <h1 class="mb-0"><b>Admin</b>LTE</h1>
-                </a>
-            </div>
-            <div class="card-body login-card-body">
-                <p class="login-box-msg">Sign in to start your session</p>
-                @error('email')
-                    <div class="alert alert-danger" role="alert">
-                        {{ $message }}
-                    </div>
-                @enderror
+<body class="d-flex align-items-center min-vh-100" style="background-color: #F5F9FC;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-11 col-sm-10 col-md-6 col-lg-4">
 
-                <form action="{{ route('login') }}" method="post">
-                    @csrf
-                    <div class="input-group mb-1">
-                        <div class="form-floating">
-                            <input id="loginEmail" name="email" type="email" class="form-control" value=""
-                                placeholder="" />
-                            <label for="loginEmail">Email</label>
-                        </div>
-                        <div class="input-group-text">
-                            <span class="bi bi-envelope"></span>
-                        </div>
-                    </div>
-                    <div class="input-group mb-1">
-                        <div class="form-floating">
-                            <input id="loginPassword" name="password" type="password" class="form-control"
-                                placeholder="" />
-                            <label for="loginPassword">Password</label>
-                        </div>
-                        <div class="input-group-text">
-                            <span class="bi bi-lock-fill"></span>
-                        </div>
-                    </div>
-                    <!--begin::Row-->
-                    <div class="row">
-                        <!-- /.col -->
-                        <div class="col-12">
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary">Login</button>
+                <div class="text-center mb-4">
+                    <img src="{{ asset('images/sipinter-logo.png') }}" alt="SIPINTER" height="100">
+                    <h1 class="mt-3 fw-bold" style="color: #095890;">SIPINTER</h1>
+                    <p class="mb-0" style="color: #64748B;">Belajar Interaktif dan Menyenangkan</p>
+                </div>
+
+                <div class="card border-0 shadow rounded-4" style="background-color: #FFFFFF;">
+                    <div class="card-body p-4">
+
+                        @error('email')
+                            <div class="alert alert-danger d-flex align-items-center gap-2 py-2 ps-3 pe-2 rounded-3 mb-3"
+                                role="alert">
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span>{{ $message }}</span>
                             </div>
-                        </div>
-                        <!-- /.col -->
-                    </div>
-                    <!--end::Row-->
-                </form>
+                        @enderror
 
-                <p class="mb-1 mt-3 text-center">
-                    <a href="{{ route('register') }}">Daftar sebagai pengguna baru</a>
-                </p>
+                        <form action="{{ route('login') }}" method="post">
+                            @csrf
+
+                            <div class="input-group mb-3">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-envelope" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <input id="loginEmail" name="email" type="email"
+                                        class="form-control border-start-0 rounded-end-4 @error('email') is-invalid @enderror"
+                                        value="{{ old('email') }}" placeholder="name@example.com" style="border-color: #DDE7EF;">
+                                    <label for="loginEmail">Email</label>
+                                </div>
+                            </div>
+
+                            <div class="input-group mb-4">
+                                <span class="input-group-text bg-white border-end-0 rounded-start-4" style="border-color: #DDE7EF;">
+                                    <i class="bi bi-lock-fill" style="color: #095890;"></i>
+                                </span>
+                                <div class="form-floating flex-grow-1">
+                                    <input id="loginPassword" name="password" type="password"
+                                        class="form-control border-start-0 rounded-end-4" placeholder="Password" style="border-color: #DDE7EF;">
+                                    <label for="loginPassword">Password</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-si-primary btn w-100 rounded-pill py-2 fw-semibold border-0">
+                                Masuk
+                            </button>
+                        </form>
+
+                        <p class="text-center mt-4 mb-0" style="color: #64748B;">
+                            Belum punya akun?
+                            <a href="{{ route('register') }}"
+                                class="fw-semibold text-decoration-none" style="color: #095890;">Daftar</a>
+                        </p>
+
+                    </div>
+                </div>
+
+                <p class="text-center small mt-4" style="color: #64748B;">&copy; 2026 SIPINTER</p>
 
             </div>
-            <!-- /.login-card-body -->
         </div>
     </div>
-    <!-- /.login-box -->
 
-    <!--begin::Third Party Plugin(OverlayScrollbars)-->
-    <script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
-        crossorigin="anonymous"></script>
-    <!--end::Third Party Plugin(OverlayScrollbars)--><!--begin::Required Plugin(popperjs for Bootstrap 5)-->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
-    <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
-    <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="{{ asset('admin-lte/dist/js/adminlte.js') }}"></script>
-    <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
-    <script>
-        const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
-        const Default = {
-            scrollbarTheme: 'os-theme-light',
-            scrollbarAutoHide: 'leave',
-            scrollbarClickScroll: true,
-        };
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
-
-            // Disable OverlayScrollbars on mobile devices to prevent touch interference
-            const isMobile = window.innerWidth <= 992;
-
-            if (
-                sidebarWrapper &&
-                OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined &&
-                !isMobile
-            ) {
-                OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
-                    scrollbars: {
-                        theme: Default.scrollbarTheme,
-                        autoHide: Default.scrollbarAutoHide,
-                        clickScroll: Default.scrollbarClickScroll,
-                    },
-                });
-            }
-        });
-    </script>
-    <!--end::OverlayScrollbars Configure--><!--begin::Color Mode Toggle (#6010)-->
-    <script>
-        (() => {
-            'use strict';
-
-            const STORAGE_KEY = 'lte-theme';
-
-            const getStoredTheme = () => localStorage.getItem(STORAGE_KEY);
-            const setStoredTheme = (theme) => localStorage.setItem(STORAGE_KEY, theme);
-
-            const prefersDark = () => globalThis.matchMedia('(prefers-color-scheme: dark)').matches;
-
-            const getPreferredTheme = () => {
-                const stored = getStoredTheme();
-                if (stored) return stored;
-                return prefersDark() ? 'dark' : 'light';
-            };
-
-            const setTheme = (theme) => {
-                const resolved = theme === 'auto' ? (prefersDark() ? 'dark' : 'light') : theme;
-                document.documentElement.setAttribute('data-bs-theme', resolved);
-            };
-
-            setTheme(getPreferredTheme());
-
-            const showActiveTheme = (theme) => {
-                // Highlight the active dropdown option
-                document.querySelectorAll('[data-bs-theme-value]').forEach((el) => {
-                    el.classList.remove('active');
-                    el.setAttribute('aria-pressed', 'false');
-                    const check = el.querySelector('.bi-check-lg');
-                    if (check) check.classList.add('d-none');
-                });
-                const active = document.querySelector(`[data-bs-theme-value="${theme}"]`);
-                if (active) {
-                    active.classList.add('active');
-                    active.setAttribute('aria-pressed', 'true');
-                    const check = active.querySelector('.bi-check-lg');
-                    if (check) check.classList.remove('d-none');
-                }
-                // Sync the topbar trigger icon
-                document.querySelectorAll('[data-lte-theme-icon]').forEach((icon) => {
-                    icon.classList.toggle('d-none', icon.dataset.lteThemeIcon !== theme);
-                });
-            };
-
-            globalThis.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-                const stored = getStoredTheme();
-                if (!stored || stored === 'auto') setTheme(getPreferredTheme());
-            });
-
-            document.addEventListener('DOMContentLoaded', () => {
-                showActiveTheme(getPreferredTheme());
-                document.querySelectorAll('[data-bs-theme-value]').forEach((toggle) => {
-                    toggle.addEventListener('click', () => {
-                        const theme = toggle.getAttribute('data-bs-theme-value');
-                        setStoredTheme(theme);
-                        setTheme(theme);
-                        showActiveTheme(theme);
-                    });
-                });
-            });
-        })();
-    </script>
-    <!--end::Color Mode Toggle-->
-    <!--end::Script-->
+    @stack('scripts')
 </body>
-<!--end::Body-->
 
 </html>
