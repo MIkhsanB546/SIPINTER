@@ -17,6 +17,7 @@ use App\Http\Controllers\Student\DashboardController as StudentDashboardControll
 use App\Http\Controllers\Student\MateriController as StudentMateriController;
 use App\Http\Controllers\Student\QuizController as StudentQuizController;
 use App\Http\Controllers\Student\ProfileController as StudentProfileController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StyleGuideController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,16 +32,10 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'store']);
 });
 
+Route::get('/', [LandingController::class, 'index'])->name('home');
+
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LogoutController::class, 'destroy'])->name('logout');
-
-    Route::get('/', function () {
-        $role = auth()->user()->role;
-        return match ($role) {
-            'siswa' => redirect()->route('siswa.dashboard'),
-            default => redirect()->route('dashboard.index'),
-        };
-    });
 
     // ============================================================
     // Admin & Guru Dashboard
