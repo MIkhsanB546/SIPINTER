@@ -54,24 +54,6 @@ Aplikasi ini dikembangkan sebagai proyek **IT Bootcamp Kelompok 10**.
 
 ---
 
-## 📂 Struktur Proyek
-
-```text
-app/
-database/
-public/
-resources/
-├── views/
-│   ├── auth/
-│   ├── dashboard/
-│   ├── layouts/
-│   └── student/
-routes/
-storage/
-```
-
----
-
 ## ⚙️ Instalasi
 
 Clone repository
