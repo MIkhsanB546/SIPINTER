@@ -25,7 +25,7 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
-    <link rel="preload" href="./css/adminlte.css" as="style" />
+    {{-- <link rel="preload" href="{{ asset('admin-lte/dist/css/adminlte.min.css') }}" as="style" /> --}}
     <!--end::Accessibility Features-->
 
     <!--begin::Fonts-->
@@ -43,9 +43,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
         crossorigin="anonymous" />
     <!--end::Third Party Plugin(Bootstrap Icons)-->
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
     <!--begin::Required Plugin(AdminLTE)-->
-    <link rel="stylesheet" href="{{ asset('admin-lte/dist/css/adminlte.css') }}" />
+    <link rel="stylesheet" href="{{ asset('admin-lte/dist/css/adminlte.min.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
 
     <style>
@@ -177,22 +177,23 @@
                     <!--begin::User Menu Dropdown-->
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            @if(Auth::user()->avatar)
-                            <img src="{{ Auth::user()->avatar }}"
-                                class="user-image rounded-circle shadow" alt="Avatar" />
+                            @if (Auth::user()->avatar)
+                                <img src="{{ Auth::user()->avatar }}" class="user-image rounded-circle shadow"
+                                    alt="Avatar" />
                             @else
-                            <i class="bi bi-person-circle fs-3" style="color: #6c757d;"></i>
+                                <i class="bi bi-person-circle fs-3" style="color: #6c757d;"></i>
                             @endif
                             <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <!--begin::User Image-->
                             <li class="user-header text-bg-primary">
-                                @if(Auth::user()->avatar)
-                                <img src="{{ Auth::user()->avatar }}"
-                                    class="rounded-circle shadow" alt="Avatar" />
+                                @if (Auth::user()->avatar)
+                                    <img src="{{ Auth::user()->avatar }}" class="rounded-circle shadow"
+                                        alt="Avatar" />
                                 @else
-                                <i class="bi bi-person-circle" style="font-size: 5rem; color: rgba(255,255,255,0.8);"></i>
+                                    <i class="bi bi-person-circle"
+                                        style="font-size: 5rem; color: rgba(255,255,255,0.8);"></i>
                                 @endif
                                 <p>
                                     {{ Auth::user()->name }}
@@ -205,7 +206,8 @@
                                 <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-secondary">
                                     <i class="bi bi-person me-1"></i> Lihat Profil
                                 </a>
-                                <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-secondary float-end">
+                                <a href="{{ route('dashboard.profile') }}"
+                                    class="btn btn-outline-secondary float-end">
                                     <i class="bi bi-gear me-1"></i> Pengaturan Profil
                                 </a>
                             </li>
@@ -374,7 +376,7 @@
     <!--end::Required Plugin(popperjs for Bootstrap 5)--><!--begin::Required Plugin(Bootstrap 5)-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
     <!--end::Required Plugin(Bootstrap 5)--><!--begin::Required Plugin(AdminLTE)-->
-    <script src="{{ asset('admin-lte/dist/js/adminlte.js') }}"></script>
+    <script src="{{ asset('admin-lte/dist/js/adminlte.min.js') }}"></script>
     <!--end::Required Plugin(AdminLTE)--><!--begin::OverlayScrollbars Configure-->
     <script>
         const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
