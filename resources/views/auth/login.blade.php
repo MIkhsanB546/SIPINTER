@@ -105,6 +105,22 @@
                             </button>
                         </form>
 
+                        {{-- Pemisah --}}
+                        <div class="d-flex align-items-center my-3">
+                            <hr class="flex-grow-1 m-0" style="border-color: #DDE7EF;">
+                            <span class="mx-2 small fw-semibold" style="color: #64748B;">atau</span>
+                            <hr class="flex-grow-1 m-0" style="border-color: #DDE7EF;">
+                        </div>
+
+                        {{-- Tombol Google --}}
+                        <a href="{{ route('google-auth') }}"
+                            class="btn btn-outline-secondary w-100 rounded-pill py-2 fw-semibold d-flex align-items-center justify-content-center gap-2"
+                            style="border-color: #DDE7EF;">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                alt="Google" width="20" height="20">
+                            Masuk dengan Google
+                        </a>
+
                         {{-- Link ke halaman Registrasi --}}
                         <p class="text-center mt-4 mb-0" style="color: #64748B;">
                             Belum punya akun?
