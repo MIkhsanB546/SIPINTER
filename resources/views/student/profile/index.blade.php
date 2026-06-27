@@ -194,4 +194,64 @@
             </div>
         </div>
     </div>
+
+    {{-- Zona Berbahaya --}}
+    <div class="mt-6 bg-red-50 border border-red-300 rounded-xl p-6">
+        <h5 class="text-lg font-bold mb-1" style="color: #DC2626;">
+            <i class="bi bi-exclamation-triangle me-2"></i>Zona Berbahaya
+        </h5>
+        <p class="text-xs font-semibold mb-3" style="color: #9CA3AF;">Hapus Akun</p>
+        <div class="text-sm mb-4 space-y-1" style="color: #6B7280;">
+            <p>Menghapus akun akan:</p>
+            <ul class="list-disc list-inside space-y-0.5">
+                <li>Menghapus akun siswa</li>
+                <li>Menghapus riwayat quiz</li>
+                <li>Menghapus progres belajar</li>
+                <li>Tindakan ini tidak dapat dibatalkan</li>
+            </ul>
+        </div>
+        <button type="button"
+            onclick="document.getElementById('deleteModal').classList.remove('hidden')"
+            class="inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-white rounded-xl transition-colors duration-150"
+            style="background-color: #DC2626;">
+            <i class="bi bi-trash"></i> Hapus Akun Saya
+        </button>
+    </div>
+
+    {{-- Modal Konfirmasi Hapus Akun --}}
+    <div id="deleteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50"
+        onclick="if(event.target===this)this.classList.add('hidden')">
+        <div class="bg-white rounded-2xl shadow-xl p-6 mx-4 max-w-sm w-full"
+            onclick="event.stopPropagation()">
+            <div class="text-center mb-4">
+                <div class="w-14 h-14 mx-auto rounded-full flex items-center justify-center mb-3"
+                    style="background-color: #FEE2E2;">
+                    <i class="bi bi-exclamation-triangle text-2xl" style="color: #DC2626;"></i>
+                </div>
+                <h5 class="text-lg font-bold" style="color: #1E293B;">Hapus Akun</h5>
+            </div>
+            <p class="text-sm text-center mb-6" style="color: #6B7280;">
+                Apakah Anda yakin ingin menghapus akun?<br>
+                Semua progres belajar dan riwayat quiz akan dihapus permanen.<br>
+                Tindakan ini tidak dapat dibatalkan.
+            </p>
+            <form action="{{ route('siswa.profile.delete') }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <div class="flex gap-3">
+                    <button type="button"
+                        onclick="document.getElementById('deleteModal').classList.add('hidden')"
+                        class="flex-1 px-4 py-2.5 text-sm font-semibold rounded-xl transition-colors duration-150"
+                        style="background-color: #F1F5F9; color: #64748B; border: 1px solid #DDE7EF;">
+                        Batal
+                    </button>
+                    <button type="submit"
+                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-white rounded-xl transition-colors duration-150"
+                        style="background-color: #DC2626;">
+                        <i class="bi bi-trash me-1"></i> Hapus Akun
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

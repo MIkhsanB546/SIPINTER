@@ -108,5 +108,6 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/profile', [StudentProfileController::class, 'index'])->name('profile');
         Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/delete', [StudentProfileController::class, 'destroy'])->name('profile.delete');
     });
 });
