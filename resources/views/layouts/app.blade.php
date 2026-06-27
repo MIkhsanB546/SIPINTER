@@ -177,15 +177,23 @@
                     <!--begin::User Menu Dropdown-->
                     <li class="nav-item dropdown user-menu">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                            <img src="{{ asset('admin-lte/dist/assets/img/avatar.png') }}"
-                                class="user-image rounded-circle shadow" alt="User Image" />
+                            @if(Auth::user()->avatar)
+                            <img src="{{ Auth::user()->avatar }}"
+                                class="user-image rounded-circle shadow" alt="Avatar" />
+                            @else
+                            <i class="bi bi-person-circle fs-3" style="color: #6c757d;"></i>
+                            @endif
                             <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
                             <!--begin::User Image-->
                             <li class="user-header text-bg-primary">
-                                <img src="{{ asset('admin-lte/dist/assets/img/avatar.png') }}"
-                                    class="rounded-circle shadow" alt="User Image" />
+                                @if(Auth::user()->avatar)
+                                <img src="{{ Auth::user()->avatar }}"
+                                    class="rounded-circle shadow" alt="Avatar" />
+                                @else
+                                <i class="bi bi-person-circle" style="font-size: 5rem; color: rgba(255,255,255,0.8);"></i>
+                                @endif
                                 <p>
                                     {{ Auth::user()->name }}
                                     <small>{{ Auth::user()->role }}</small>
@@ -194,10 +202,19 @@
                             <!--end::User Image-->
                             <!--begin::Menu Footer-->
                             <li class="user-footer">
-                                <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-secondary">Profile</a>
-                                <form action="{{ route('logout') }}" method="post" class="d-inline">
+                                <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-secondary">
+                                    <i class="bi bi-person me-1"></i> Lihat Profil
+                                </a>
+                                <a href="{{ route('dashboard.profile') }}" class="btn btn-outline-secondary float-end">
+                                    <i class="bi bi-gear me-1"></i> Pengaturan Profil
+                                </a>
+                            </li>
+                            <li class="user-footer border-top" style="border-color: #DDE7EF !important;">
+                                <form action="{{ route('logout') }}" method="post">
                                     @csrf
-                                    <button type="submit" class="btn btn-outline-danger float-end">Sign out</button>
+                                    <button type="submit" class="btn btn-outline-danger w-100">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Keluar
+                                    </button>
                                 </form>
                             </li>
                             <!--end::Menu Footer-->

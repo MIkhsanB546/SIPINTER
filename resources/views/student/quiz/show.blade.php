@@ -12,8 +12,8 @@
 
 {{-- Tampilkan error validasi --}}
 @if($errors->any())
-<div class="alert alert-danger mb-6">
-    <ul class="mb-0">
+<div class="bg-red-50 border-l-4 border-red-500 text-red-800 rounded-xl p-4 mb-6">
+    <ul class="list-disc list-inside text-sm space-y-1">
         @foreach($errors->all() as $error)
             <li>{{ $error }}</li>
         @endforeach
@@ -71,7 +71,4 @@
 </form>
 @endsection
 
-{{-- Alpine.js untuk interaktivitas pilihan jawaban --}}
-@push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-@endpush
+

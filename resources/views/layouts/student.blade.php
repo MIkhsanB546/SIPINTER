@@ -3,14 +3,13 @@
 <html lang="id">
 
 <head>
-    {{-- Meta --}}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'SIPINTER') - Siswa</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
         crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <style>
         :root {
             --si-primary: #095890;
@@ -33,51 +32,12 @@
             border-color: var(--si-primary) !important;
         }
 
-        .navbar .navbar-brand img {
-            max-width: none !important;
-        }
-
-        .navbar-menu {
-            display: none;
-            flex-grow: 1;
-            align-items: center;
-        }
-
-        @media (max-width: 991.98px) {
-            .navbar-menu.show {
-                display: flex;
-                flex-wrap: wrap;
-                width: 100%;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .navbar-menu {
-                display: flex !important;
-            }
-        }
-
-        .navbar .nav-link {
-            border-radius: 8px !important;
-        }
-
-        .active-si {
+        .hover\:text-si-primary:hover {
             color: var(--si-primary) !important;
+        }
+
+        .hover\:bg-si-light:hover {
             background-color: #E8F0F6 !important;
-            border-radius: 12px !important;
-        }
-
-        .navbar .nav-link.active-si:hover {
-            color: var(--si-primary) !important;
-            background-color: #D0E2ED !important;
-        }
-
-        .navbar .nav-link:not(.active-si):hover {
-            background-color: #F1F5F9 !important;
-        }
-
-        .dropdown-item:active {
-            background-color: var(--si-primary) !important;
         }
 
         .text-indigo-600,
@@ -131,15 +91,31 @@
         .bg-gradient-to-br.from-indigo-400.to-purple-500 {
             background-image: linear-gradient(135deg, #095890, #0A6AAE) !important;
         }
+
+        .nav-link-active {
+            color: var(--si-primary) !important;
+            background-color: #E8F0F6 !important;
+        }
+
+        .nav-link-active:hover {
+            color: var(--si-primary) !important;
+            background-color: #D0E2ED !important;
+        }
+
+        .nav-link-inactive:hover {
+            background-color: #F1F5F9 !important;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
     @stack('styles')
 </head>
 
 <body class="bg-gray-50 min-h-screen">
-    {{-- Navigasi --}}
     @include('student.components.navbar')
 
-    {{-- Notifikasi Sukses --}}
     @if (session('success'))
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
             <div class="bg-green-50 border-l-4 border-green-500 text-green-800 rounded-xl p-4 flex items-center gap-3 shadow-sm"
@@ -150,7 +126,6 @@
         </div>
     @endif
 
-    {{-- Notifikasi Error --}}
     @if (session('error'))
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
             <div class="bg-red-50 border-l-4 border-red-500 text-red-800 rounded-xl p-4 flex items-center gap-3 shadow-sm"
@@ -161,20 +136,16 @@
         </div>
     @endif
 
-    {{-- Konten Utama --}}
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         @yield('content')
     </main>
 
-    {{-- Footer --}}
     <footer class="bg-white border-t border-gray-200 mt-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-400">
             &copy; {{ date('Y') }} SIPINTER. Semua Hak Dilindungi.
         </div>
     </footer>
 
-    {{-- Scripts --}}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     @stack('scripts')
 </body>
 
