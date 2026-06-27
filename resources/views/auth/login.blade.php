@@ -121,6 +121,14 @@
                             Masuk dengan Google
                         </a>
 
+                        {{-- Tombol QR --}}
+                        <a href="{{ route('login.qr') }}"
+                            class="btn btn-outline-secondary w-100 rounded-pill py-2 fw-semibold d-flex align-items-center justify-content-center gap-2 mt-2"
+                            style="border-color: #DDE7EF;">
+                            <i class="bi bi-qr-code-scan fs-5"></i>
+                            Masuk dengan QR Code
+                        </a>
+
                         {{-- Link ke halaman Registrasi --}}
                         <p class="text-center mt-4 mb-0" style="color: #64748B;">
                             Belum punya akun?

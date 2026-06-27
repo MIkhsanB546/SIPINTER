@@ -77,17 +77,19 @@
 
                     {{-- QR Login --}}
                     @if($user->qr_token)
+                    @php
+                        $qrUrl = route('login.qr.process', $user->qr_token);
+                        $qrSvg = QrCode::size(220)->generate($qrUrl);
+                        $qrDataUri = 'data:image/svg+xml;base64,' . base64_encode($qrSvg);
+                    @endphp
                     <div class="text-start">
                         <small class="fw-semibold d-block mb-2" style="color: #64748B;">QR Login</small>
                         <div class="text-center mb-2">
-                            <img src="https://chart.googleapis.com/chart?chs=150x150&cht=qr&chl={{ $user->qr_token }}&choe=UTF-8"
-                                 width="120" height="120"
-                                 alt="QR Code"
-                                 style="border-radius: 8px; border: 1px solid #DDE7EF;">
+                            {!! $qrSvg !!}
                         </div>
-                        <a href="https://chart.googleapis.com/chart?chs=300x300&cht=qr&chl={{ $user->qr_token }}&choe=UTF-8"
+                        <a href="{{ $qrDataUri }}"
                            class="btn btn-outline-secondary btn-sm w-100 rounded-pill"
-                           download="qr-{{ $user->qr_token }}.png"
+                           download="qr-{{ $user->qr_token }}.svg"
                            style="border-color: #DDE7EF;">
                             <i class="bi bi-download me-1"></i> Unduh QR
                         </a>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Auth\QRLoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MateriController as DashboardMateriController;
@@ -34,6 +35,9 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('google-auth');
     Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback']);
+
+    Route::get('/login/qr', [QRLoginController::class, 'show'])->name('login.qr');
+    Route::get('/login/qr/{token}', [QRLoginController::class, 'login'])->name('login.qr.process');
 });
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
