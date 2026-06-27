@@ -7,6 +7,7 @@ use App\Http\Requests\StoreQuizRequest;
 use App\Http\Requests\UpdateQuizRequest;
 use App\Models\Quiz;
 use App\Models\Materi;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk mengelola data quiz.
@@ -18,7 +19,7 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $quizList = Quiz::with('materi.guru')->latest()->get();
@@ -37,7 +38,7 @@ class QuizController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user->role === 'admin') {
             $materiList = Materi::all();
         } else {
@@ -74,7 +75,7 @@ class QuizController extends Controller
     public function edit(Quiz $quiz)
     {
         $this->authorize('update', $quiz);
-        $user = auth()->user();
+        $user = Auth::user();
         if ($user->role === 'admin') {
             $materiList = Materi::all();
         } else {

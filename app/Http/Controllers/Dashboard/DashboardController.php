@@ -7,6 +7,7 @@ use App\Models\Materi;
 use App\Models\Quiz;
 use App\Models\User;
 use App\Models\QuizAttempt;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk dashboard admin dan guru.
@@ -19,7 +20,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
         $isGuru = $user->role === 'guru';
         $isAdmin = $user->role === 'admin';
 
@@ -43,8 +44,14 @@ class DashboardController extends Controller
                 ->get();
 
             return view('dashboard.index', compact(
-                'jumlahMateri', 'jumlahQuiz', 'jumlahSiswa', 'rataNilai',
-                'latestMateri', 'latestQuiz', 'isGuru', 'isAdmin'
+                'jumlahMateri',
+                'jumlahQuiz',
+                'jumlahSiswa',
+                'rataNilai',
+                'latestMateri',
+                'latestQuiz',
+                'isGuru',
+                'isAdmin'
             ));
         }
 
@@ -65,8 +72,13 @@ class DashboardController extends Controller
             ->get();
 
         return view('dashboard.index', compact(
-            'jumlahMateri', 'jumlahQuiz', 'jumlahSiswa', 'jumlahGuru',
-            'latestMateri', 'latestQuiz', 'isAdmin'
+            'jumlahMateri',
+            'jumlahQuiz',
+            'jumlahSiswa',
+            'jumlahGuru',
+            'latestMateri',
+            'latestQuiz',
+            'isAdmin'
         ));
     }
 }

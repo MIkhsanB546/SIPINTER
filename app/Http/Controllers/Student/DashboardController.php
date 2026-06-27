@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Materi;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk dashboard siswa.
@@ -17,7 +18,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $siswaId = auth()->user()->id_user;
+        $siswaId = Auth::user()->id_user;
 
         // Total quiz yang tersedia untuk siswa
         $totalQuiz = Quiz::whereHas('materi', fn($q) => $q->where('is_published', true))->count();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\QuizAttempt;
 use App\Models\Materi;
 use App\Models\Quiz;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk menampilkan hasil belajar siswa.
@@ -18,7 +19,7 @@ class HasilSiswaController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $attempts = QuizAttempt::with(['siswa', 'quiz.materi'])

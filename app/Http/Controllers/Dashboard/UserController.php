@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk mengelola data pengguna oleh admin.
@@ -73,7 +74,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->id_user === auth()->id()) {
+        if ($user->id_user === Auth::id()) {
             return back()->with('error', 'Tidak dapat menghapus akun sendiri.');
         }
 

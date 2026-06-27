@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateMateriRequest;
 use App\Models\Materi;
 use App\Models\Jenjang;
 use App\Models\KategoriMateri;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -20,7 +21,7 @@ class MateriController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $materiList = Materi::with(['guru', 'jenjang', 'kategori'])->latest()->get();
@@ -50,7 +51,7 @@ class MateriController extends Controller
     public function store(StoreMateriRequest $request)
     {
         $data = $request->validated();
-        $data['id_guru'] = auth()->id();
+        $data['id_guru'] = Auth::id();
 
         if ($request->hasFile('file_materi')) {
             $data['file_materi'] = $request->file('file_materi')->store('materi/files', 'public');

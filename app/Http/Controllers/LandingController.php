@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Materi;
 use App\Models\Quiz;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk halaman landing (beranda publik).
@@ -17,9 +18,9 @@ class LandingController extends Controller
      */
     public function index()
     {
-        if (auth()->check()) {
-            $role = auth()->user()->role;
-            return match ($role) {
+        if (Auth::check()) {
+            $user = Auth::user();
+            return match ($user->role) {
                 'siswa' => redirect()->route('siswa.dashboard'),
                 default => redirect()->route('dashboard.index'),
             };

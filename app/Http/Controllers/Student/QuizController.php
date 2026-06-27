@@ -7,6 +7,7 @@ use App\Http\Requests\SubmitQuizRequest;
 use App\Models\Quiz;
 use App\Models\QuizAttempt;
 use App\Models\JawabanSiswa;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Controller untuk pengerjaan quiz oleh siswa.
@@ -18,7 +19,7 @@ class QuizController extends Controller
      */
     public function index()
     {
-        $siswaId = auth()->id();
+        $siswaId = Auth::id();
 
         $quizList = Quiz::with('materi')
             ->whereHas('materi', fn($q) => $q->where('is_published', true))
@@ -50,7 +51,7 @@ class QuizController extends Controller
      */
     public function start(Quiz $quiz)
     {
-        $siswaId = auth()->id();
+        $siswaId = Auth::id();
 
         // Tentukan nomor attempt berikutnya
         $latestAttempt = QuizAttempt::where('id_siswa', $siswaId)
@@ -143,7 +144,7 @@ class QuizController extends Controller
      */
     public function history()
     {
-        $siswaId = auth()->id();
+        $siswaId = Auth::id();
         $attempts = QuizAttempt::where('id_siswa', $siswaId)
             ->with('quiz.materi')
             ->latest('tanggal_pengerjaan')
