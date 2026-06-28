@@ -31,8 +31,8 @@
                             <td>{{ $materi->guru->name ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <th>Jenjang</th>
-                            <td>{{ $materi->jenjang->nama_jenjang ?? '-' }}</td>
+                            <th>Tingkat</th>
+                            <td>{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}</td>
                         </tr>
                         <tr>
                             <th>Kategori</th>

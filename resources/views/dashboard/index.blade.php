@@ -3,11 +3,8 @@
 @section('title', 'Dashboard')
 
 @section('content')
-{{-- Konten dashboard --}}
 <div class="container-fluid">
-    {{-- Kartu statistik --}}
     <div class="row g-3 mb-4">
-        {{-- Blok kartu untuk role Guru --}}
         @if (isset($isGuru) && $isGuru)
         <div class="col-lg-3 col-6">
             <div class="card">
@@ -69,7 +66,37 @@
                 </div>
             </div>
         </div>
-        {{-- Blok kartu untuk role Admin --}}
+        {{-- Additional Guru stats --}}
+        <div class="col-lg-3 col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1">Siswa Belajar Materi Saya</p>
+                            <h3 class="mb-0 fw-bold">{{ $totalSiswaBelajar ?? 0 }}</h3>
+                        </div>
+                        <div class="bg-purple bg-opacity-10 rounded-3 p-3">
+                            <i class="bi bi-mortarboard fs-4 text-purple"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <p class="text-muted mb-1">Siswa Sedang Belajar</p>
+                            <h3 class="mb-0 fw-bold">{{ $siswaSekarangBelajar ?? 0 }}</h3>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 rounded-3 p-3">
+                            <i class="bi bi-clock-history fs-4 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         @else
         <div class="col-lg-3 col-6">
             <div class="card">
@@ -134,7 +161,6 @@
         @endif
     </div>
 
-    {{-- Tabel materi terbaru --}}
     <div class="row g-3">
         <div class="col-lg-6">
             <div class="card">
@@ -148,7 +174,7 @@
                                 <tr>
                                     <th>Judul</th>
                                     <th>Guru</th>
-                                    <th>Jenjang</th>
+                                    <th>Tingkat</th>
                                     <th>Kategori</th>
                                 </tr>
                             </thead>
@@ -157,7 +183,7 @@
                                 <tr>
                                     <td>{{ $materi->judul }}</td>
                                     <td>{{ $materi->guru->name ?? '-' }}</td>
-                                    <td>{{ $materi->jenjang->nama_jenjang ?? '-' }}</td>
+                                    <td>{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}</td>
                                     <td>{{ $materi->kategori->nama_kategori ?? '-' }}</td>
                                 </tr>
                                 @empty
@@ -172,11 +198,10 @@
             </div>
         </div>
 
-        {{-- Tabel quiz terbaru --}}
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Quiz Terbaru</h5>
+                    <h5 class="card-title mb-0">{{ isset($isGuru) && $isGuru ? 'Quiz Terbaru' : 'Quiz Terbaru' }}</h5>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -207,8 +232,49 @@
             </div>
         </div>
     </div>
+
+    @if (isset($isGuru) && $isGuru && isset($recentAttempts) && $recentAttempts->isNotEmpty())
+    <div class="row g-3 mt-2">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Percobaan Quiz Terbaru</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="recentAttemptsTable" class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Siswa</th>
+                                    <th>Quiz</th>
+                                    <th>Materi</th>
+                                    <th>Skor</th>
+                                    <th>Tanggal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($recentAttempts as $attempt)
+                                <tr>
+                                    <td>{{ $attempt->siswa->name ?? '-' }}</td>
+                                    <td>{{ $attempt->quiz->judul ?? '-' }}</td>
+                                    <td>{{ $attempt->quiz->materi->judul ?? '-' }}</td>
+                                    <td>
+                                        <span class="badge {{ $attempt->skor_persen >= 80 ? 'bg-success' : ($attempt->skor_persen >= 60 ? 'bg-warning' : 'bg-danger') }}">
+                                            {{ $attempt->skor_persen }}%
+                                        </span>
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($attempt->tanggal_pengerjaan)->translatedFormat('d M Y H:i') }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
-{{-- Inisialisasi DataTable --}}
 @push('scripts')
 <script>
 $(document).ready(function() {
@@ -222,6 +288,13 @@ $(document).ready(function() {
         pageLength: 5,
         language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/id.json' }
     });
+    @if (isset($recentAttempts) && $recentAttempts->isNotEmpty())
+    $('#recentAttemptsTable').DataTable({
+        responsive: true,
+        pageLength: 5,
+        language: { url: '//cdn.datatables.net/plug-ins/1.13.11/i18n/id.json' }
+    });
+    @endif
 });
 </script>
 @endpush

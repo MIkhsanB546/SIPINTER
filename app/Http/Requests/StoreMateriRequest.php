@@ -4,9 +4,6 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * FormRequest untuk validasi penyimpanan materi baru.
- */
 class StoreMateriRequest extends FormRequest
 {
     public function authorize(): bool
@@ -14,13 +11,10 @@ class StoreMateriRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Aturan validasi untuk materi baru.
-     */
     public function rules(): array
     {
         return [
-            'id_jenjang' => ['required', 'exists:jenjang,id_jenjang'],
+            'id_tingkat' => ['required', 'exists:tingkat_kesulitan,id_tingkat'],
             'id_kategori_materi' => ['required', 'exists:kategori_materi,id_kategori_materi'],
             'judul' => ['required', 'string', 'max:255'],
             'deskripsi' => ['nullable', 'string'],
@@ -30,13 +24,10 @@ class StoreMateriRequest extends FormRequest
         ];
     }
 
-    /**
-     * Label atribut dalam Bahasa Indonesia.
-     */
     public function attributes(): array
     {
         return [
-            'id_jenjang' => 'Jenjang',
+            'id_tingkat' => 'Tingkat Kesulitan',
             'id_kategori_materi' => 'Kategori',
             'judul' => 'Judul',
             'deskripsi' => 'Deskripsi',

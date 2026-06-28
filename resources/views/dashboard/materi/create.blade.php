@@ -3,14 +3,12 @@
 @section('title', 'Tambah Materi')
 
 @section('content')
-{{-- Form tambah materi --}}
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
             <h5 class="card-title mb-0">Tambah Materi Baru</h5>
         </div>
         <div class="card-body">
-            {{-- Validasi error --}}
             @if($errors->any())
             <div class="alert alert-danger">
                 <ul class="mb-0">
@@ -23,7 +21,6 @@
             <form action="{{ route('dashboard.materi.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
-                {{-- Field judul --}}
                 <div class="mb-3">
                     <label for="judul" class="form-label">Judul <span class="text-danger">*</span></label>
                     <input type="text" name="judul" id="judul" class="form-control @error('judul') is-invalid @enderror" value="{{ old('judul') }}">
@@ -32,23 +29,21 @@
                     @enderror
                 </div>
 
-                {{-- Field jenjang --}}
                 <div class="mb-3">
-                    <label for="id_jenjang" class="form-label">Jenjang <span class="text-danger">*</span></label>
-                    <select name="id_jenjang" id="id_jenjang" class="form-select @error('id_jenjang') is-invalid @enderror">
-                        <option value="">-- Pilih Jenjang --</option>
-                        @foreach ($jenjangList as $jenjang)
-                        <option value="{{ $jenjang->id_jenjang }}" {{ old('id_jenjang') == $jenjang->id_jenjang ? 'selected' : '' }}>
-                            {{ $jenjang->nama_jenjang }}
+                    <label for="id_tingkat" class="form-label">Tingkat Kesulitan <span class="text-danger">*</span></label>
+                    <select name="id_tingkat" id="id_tingkat" class="form-select @error('id_tingkat') is-invalid @enderror">
+                        <option value="">-- Pilih Tingkat --</option>
+                        @foreach ($tingkatList as $tingkat)
+                        <option value="{{ $tingkat->id_tingkat }}" {{ old('id_tingkat') == $tingkat->id_tingkat ? 'selected' : '' }}>
+                            {{ $tingkat->nama_tingkat }}
                         </option>
                         @endforeach
                     </select>
-                    @error('id_jenjang')
+                    @error('id_tingkat')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-                {{-- Field kategori --}}
                 <div class="mb-3">
                     <label for="id_kategori_materi" class="form-label">Kategori <span class="text-danger">*</span></label>
                     <select name="id_kategori_materi" id="id_kategori_materi" class="form-select @error('id_kategori_materi') is-invalid @enderror">
@@ -64,7 +59,6 @@
                     @enderror
                 </div>
 
-                {{-- Field deskripsi --}}
                 <div class="mb-3">
                     <label for="deskripsi" class="form-label">Deskripsi</label>
                     <textarea name="deskripsi" id="deskripsi" rows="4" class="form-control @error('deskripsi') is-invalid @enderror">{{ old('deskripsi') }}</textarea>
@@ -73,7 +67,6 @@
                     @enderror
                 </div>
 
-                {{-- Field upload file materi --}}
                 <div class="mb-3">
                     <label for="file_materi" class="form-label">File Materi</label>
                     <input type="file" name="file_materi" id="file_materi" class="form-control @error('file_materi') is-invalid @enderror" accept=".pdf,.docx,.pptx">
@@ -82,7 +75,6 @@
                     @enderror
                 </div>
 
-                {{-- Field upload thumbnail --}}
                 <div class="mb-3">
                     <label for="thumbnail" class="form-label">Thumbnail</label>
                     <input type="file" name="thumbnail" id="thumbnail" class="form-control @error('thumbnail') is-invalid @enderror" accept="image/*">
@@ -91,7 +83,6 @@
                     @enderror
                 </div>
 
-                {{-- Checkbox status publish --}}
                 <div class="mb-3 form-check">
                     <input type="hidden" name="is_published" value="0">
                     <input type="checkbox" name="is_published" id="is_published" class="form-check-input @error('is_published') is-invalid @enderror" value="1" {{ old('is_published') ? 'checked' : '' }}>
@@ -101,7 +92,6 @@
                     @enderror
                 </div>
 
-                {{-- Tombol aksi --}}
                 <div class="d-flex gap-2">
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     <a href="{{ route('dashboard.materi.index') }}" class="btn btn-secondary">Batal</a>

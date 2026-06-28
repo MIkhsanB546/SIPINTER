@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
-/**
- * Model pengguna (guru, siswa, admin).
- */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -38,20 +35,44 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Relasi ke materi yang dibuat oleh guru.
-     */
     public function materi()
     {
         return $this->hasMany(Materi::class, 'id_guru');
     }
 
-    /**
-     * Relasi ke percobaan quiz yang dilakukan siswa.
-     */
     public function quizAttempts()
     {
         return $this->hasMany(QuizAttempt::class, 'id_siswa');
+    }
+
+    // Student saved/learning materials
+    public function materiSiswa()
+    {
+        return $this->belongsToMany(Materi::class, 'materi_siswa', 'id_siswa', 'id_materi')
+            ->withPivot(['status', 'progress', 'started_at', 'completed_at'])
+            ->withTimestamps();
+    }
+
+    // Parent: students linked to this parent
+    public function anak()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'orang_tua_siswa',
+            'id_orang_tua',
+            'id_siswa'
+        )->withTimestamps();
+    }
+
+    // Student: parents linked to this student
+    public function orangTua()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'orang_tua_siswa',
+            'id_siswa',
+            'id_orang_tua'
+        )->withTimestamps();
     }
 
     protected static function booted()
@@ -63,17 +84,11 @@ class User extends Authenticatable
         });
     }
 
-    /**
-     * Scope untuk filter pengguna dengan role guru.
-     */
     public function scopeGuru($query)
     {
         return $query->where('role', 'guru');
     }
 
-    /**
-     * Scope untuk filter pengguna dengan role siswa.
-     */
     public function scopeSiswa($query)
     {
         return $query->where('role', 'siswa');

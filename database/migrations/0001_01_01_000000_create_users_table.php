@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['siswa', 'guru', 'admin']);
+            $table->enum('role', ['siswa', 'guru', 'admin', 'orang_tua']);
             $table->string('google_id')->nullable()->unique();
             $table->string('avatar')->nullable();
             $table->string('qr_token')->nullable()->unique();

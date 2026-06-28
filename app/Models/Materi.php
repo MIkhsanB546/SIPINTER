@@ -5,9 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-/**
- * Model materi pembelajaran.
- */
 class Materi extends Model
 {
     use HasFactory;
@@ -18,7 +15,7 @@ class Materi extends Model
 
     protected $fillable = [
         'id_guru',
-        'id_jenjang',
+        'id_tingkat',
         'id_kategori_materi',
         'judul',
         'deskripsi',
@@ -27,38 +24,30 @@ class Materi extends Model
         'is_published',
     ];
 
-    /**
-     * Relasi ke guru pembuat materi.
-     */
     public function guru()
     {
         return $this->belongsTo(User::class, 'id_guru', 'id_user');
     }
 
-    /**
-     * Relasi ke jenjang materi.
-     */
-    public function jenjang()
+    public function tingkatKesulitan()
     {
-        return $this->belongsTo(Jenjang::class, 'id_jenjang');
+        return $this->belongsTo(TingkatKesulitan::class, 'id_tingkat');
     }
 
-    /**
-     * Relasi ke kategori materi.
-     */
     public function kategori()
     {
-        return $this->belongsTo(
-            KategoriMateri::class,
-            'id_kategori_materi'
-        );
+        return $this->belongsTo(KategoriMateri::class, 'id_kategori_materi');
     }
 
-    /**
-     * Relasi ke quiz yang terkait dengan materi.
-     */
     public function quiz()
     {
         return $this->hasMany(Quiz::class, 'id_materi');
+    }
+
+    public function siswa()
+    {
+        return $this->belongsToMany(User::class, 'materi_siswa', 'id_materi', 'id_siswa')
+            ->withPivot(['status', 'progress', 'started_at', 'completed_at'])
+            ->withTimestamps();
     }
 }

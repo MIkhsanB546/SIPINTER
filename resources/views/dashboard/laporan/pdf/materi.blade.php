@@ -39,7 +39,7 @@
                 <th class="text-center" style="width: 40px;">No</th>
                 <th>Judul</th>
                 <th>Guru</th>
-                <th>Jenjang</th>
+                <th>Tingkat</th>
                 <th>Kategori</th>
                 <th>Status</th>
             </tr>
@@ -50,7 +50,7 @@
                     <td class="text-center">{{ $loop->iteration }}</td>
                     <td>{{ $materi->judul }}</td>
                     <td>{{ $materi->guru->name ?? '-' }}</td>
-                    <td>{{ $materi->jenjang->nama_jenjang ?? '-' }}</td>
+                    <td>{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}</td>
                     <td>{{ $materi->kategori->nama_kategori ?? '-' }}</td>
                     <td>
                         @if ($materi->is_published)

@@ -1,18 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Jenjang')
+@section('title', 'Edit Tingkat Kesulitan')
 
 @section('content')
-{{-- Form tambah jenjang --}}
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Tambah Jenjang</h5>
+                    <h5 class="card-title mb-0">Edit Tingkat Kesulitan</h5>
                 </div>
                 <div class="card-body">
-                    {{-- Validasi error --}}
                     @if($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
@@ -22,24 +20,23 @@
                         </ul>
                     </div>
                     @endif
-                    <form action="{{ route('dashboard.jenjang.store') }}" method="post">
+                    <form action="{{ route('dashboard.tingkat-kesulitan.update', $tingkatKesulitan->id_tingkat) }}" method="post">
                         @csrf
+                        @method('PUT')
 
-                        {{-- Field nama jenjang --}}
                         <div class="mb-3">
-                            <label for="nama_jenjang" class="form-label">Nama Jenjang <span class="text-danger">*</span></label>
-                            <input type="text" name="nama_jenjang" id="nama_jenjang" class="form-control @error('nama_jenjang') is-invalid @enderror" value="{{ old('nama_jenjang') }}" maxlength="50" required>
-                            @error('nama_jenjang')
+                            <label for="nama_tingkat" class="form-label">Nama Tingkat Kesulitan <span class="text-danger">*</span></label>
+                            <input type="text" name="nama_tingkat" id="nama_tingkat" class="form-control @error('nama_tingkat') is-invalid @enderror" value="{{ old('nama_tingkat', $tingkatKesulitan->nama_tingkat) }}" maxlength="50" required>
+                            @error('nama_tingkat')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        {{-- Tombol aksi --}}
                         <div class="d-flex gap-2">
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save"></i> Simpan
                             </button>
-                            <a href="{{ route('dashboard.jenjang.index') }}" class="btn btn-outline-secondary">Batal</a>
+                            <a href="{{ route('dashboard.tingkat-kesulitan.index') }}" class="btn btn-outline-secondary">Batal</a>
                         </div>
                     </form>
                 </div>

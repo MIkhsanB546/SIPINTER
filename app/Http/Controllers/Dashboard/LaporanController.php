@@ -132,7 +132,7 @@ class LaporanController extends Controller
      */
     public function exportMateriPdf()
     {
-        $materiList = Materi::with(['guru', 'jenjang', 'kategori'])
+        $materiList = Materi::with(['guru', 'tingkatKesulitan', 'kategori'])
             ->orderBy('judul')
             ->get();
 

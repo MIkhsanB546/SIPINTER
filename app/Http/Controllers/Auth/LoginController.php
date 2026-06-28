@@ -35,6 +35,7 @@ class LoginController extends Controller
             return match ($user->role) {
                 'admin', 'guru' => redirect()->intended('/dashboard'),
                 'siswa' => redirect()->intended('/siswa'),
+                'orang_tua' => redirect()->intended('/orang-tua'),
                 default => redirect()->intended('/dashboard'),
             };
         }

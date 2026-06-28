@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'guru' => \App\Http\Middleware\GuruMiddleware::class,
             'siswa' => \App\Http\Middleware\SiswaMiddleware::class,
             'admin-guru' => \App\Http\Middleware\AdminGuruMiddleware::class,
+            'orang_tua' => \App\Http\Middleware\OrangTuaMiddleware::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

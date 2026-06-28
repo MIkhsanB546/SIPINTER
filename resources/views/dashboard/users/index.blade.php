@@ -63,6 +63,7 @@
                             'admin' => 'bg-danger',
                             'guru' => 'bg-primary',
                             'siswa' => 'bg-success',
+                            'orang_tua' => 'bg-info',
                             default => 'bg-secondary',
                             };
                             @endphp

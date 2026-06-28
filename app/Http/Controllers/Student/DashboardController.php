@@ -4,59 +4,75 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use App\Models\Materi;
-use App\Models\Quiz;
+use App\Models\MateriSiswa;
+use App\Models\TingkatKesulitan;
+use App\Models\KategoriMateri;
 use App\Models\QuizAttempt;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-/**
- * Controller untuk dashboard siswa.
- */
 class DashboardController extends Controller
 {
-    /**
-     * Menampilkan dashboard siswa dengan statistik belajar.
-     */
     public function index()
     {
-        $siswaId = Auth::user()->id_user;
+        $siswaId = Auth::id();
 
-        // Total quiz yang tersedia untuk siswa
-        $totalQuiz = Quiz::whereHas('materi', fn($q) => $q->where('is_published', true))->count();
-
-        // Semua percobaan quiz oleh siswa
-        $attempts = QuizAttempt::where('id_siswa', $siswaId)->get();
-
-        // Jumlah quiz unik yang telah dikerjakan
-        $completedQuiz = QuizAttempt::where('id_siswa', $siswaId)
-            ->distinct()
-            ->count('id_quiz');
-
-        $averageScore = round($attempts->avg('skor_persen') ?? 0, 1);
-        $totalStars = (int) $attempts->sum('bintang');
-
-        // Progress keseluruhan dalam persen
-        $overallProgress = $totalQuiz > 0
-            ? round(($completedQuiz / $totalQuiz) * 100)
-            : 0;
-
-        $overallProgress = min($overallProgress, 100);
-
-        // Quiz yang belum pernah dikerjakan
-        $unfinishedQuiz = Quiz::whereDoesntHave('quizAttempts', function ($q) use ($siswaId) {
-            $q->where('id_siswa', $siswaId);
-        })
-            ->with([
-                'materi',
-                'materi.kategori'
-            ])
+        // My Learning - continue learning (in progress materials)
+        $continueLearning = Auth::user()->materiSiswa()
+            ->wherePivot('status', 'learning')
+            ->with(['guru', 'tingkatKesulitan', 'kategori'])
+            ->withPivot(['progress', 'status'])
+            ->latest()
             ->take(3)
             ->get();
 
-        // Riwayat pengerjaan terbaru
+        // Recently saved
+        $recentlySaved = Auth::user()->materiSiswa()
+            ->wherePivot('status', 'saved')
+            ->with(['guru', 'tingkatKesulitan', 'kategori'])
+            ->withPivot(['created_at'])
+            ->latest()
+            ->take(4)
+            ->get();
+
+        // Recommended materials (published, not saved yet)
+        $savedIds = MateriSiswa::where('id_siswa', $siswaId)->pluck('id_materi')->toArray();
+        $recommended = Materi::with(['guru', 'tingkatKesulitan', 'kategori'])
+            ->where('is_published', true)
+            ->whereNotIn('id_materi', $savedIds)
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
+
+        // Categories with count
+        $categories = KategoriMateri::withCount(['materi' => fn($q) => $q->where('is_published', true)])
+            ->orderBy('nama_kategori')
+            ->get();
+
+        // Teachers with published material count
+        $teachers = User::guru()
+            ->withCount(['materi' => fn($q) => $q->where('is_published', true)])
+            ->orderBy('name')
+            ->get();
+
+        // Progress summary
+        $totalSaved = MateriSiswa::where('id_siswa', $siswaId)->count();
+        $totalLearning = MateriSiswa::where('id_siswa', $siswaId)->where('status', 'learning')->count();
+        $totalCompleted = MateriSiswa::where('id_siswa', $siswaId)->where('status', 'completed')->count();
+        $overallProgress = $totalSaved > 0 ? round(($totalCompleted / $totalSaved) * 100) : 0;
+
+        // Recent quiz results
         $recentAttempts = QuizAttempt::where('id_siswa', $siswaId)
             ->with(['quiz.materi'])
             ->latest('tanggal_pengerjaan')
             ->take(5)
+            ->get();
+
+        // Latest published materials
+        $latestPublished = Materi::with(['guru', 'tingkatKesulitan', 'kategori'])
+            ->where('is_published', true)
+            ->latest()
+            ->take(4)
             ->get();
 
         $colors = [
@@ -69,13 +85,17 @@ class DashboardController extends Controller
         ];
 
         return view('student.dashboard.index', compact(
+            'continueLearning',
+            'recentlySaved',
+            'recommended',
+            'categories',
+            'teachers',
+            'totalSaved',
+            'totalLearning',
+            'totalCompleted',
             'overallProgress',
-            'averageScore',
-            'completedQuiz',
-            'totalQuiz',
-            'totalStars',
-            'unfinishedQuiz',
             'recentAttempts',
+            'latestPublished',
             'colors',
         ));
     }

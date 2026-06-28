@@ -266,9 +266,9 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('dashboard.jenjang.index') }}" class="nav-link">
+                                <a href="{{ route('dashboard.tingkat-kesulitan.index') }}" class="nav-link">
                                     <i class="nav-icon bi bi-layers"></i>
-                                    <p>Kelola Jenjang</p>
+                                    <p>Kelola Tingkat Kesulitan</p>
                                 </a>
                             </li>
                             <li class="nav-item">

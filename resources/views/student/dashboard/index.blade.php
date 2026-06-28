@@ -1,16 +1,14 @@
 @extends('layouts.student')
 
-{{-- Judul halaman --}}
 @section('title', 'Dashboard')
 
 @section('content')
-{{-- Header sambutan siswa --}}
 <div class="mb-8">
     <h1 class="text-3xl font-extrabold text-gray-900">Halo, {{ auth()->user()->name }}! 👋</h1>
     <p class="text-gray-500 mt-1 text-lg">Lanjutkan perjalanan belajarmu hari ini!</p>
 </div>
 
-{{-- Kartu statistik (progress, skor, quiz selesai, bintang) --}}
+{{-- Progress Summary --}}
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
         <div class="flex items-center justify-between mb-3">
@@ -23,98 +21,206 @@
             <div class="bg-indigo-500 h-2.5 rounded-full transition-all duration-500" style="width: {{ $overallProgress }}%"></div>
         </div>
         <p class="text-xs text-gray-500 mt-2 font-medium">Progress Keseluruhan</p>
-        <p class="text-xs text-gray-400 mt-0.5">{{ $completedQuiz }} dari {{ $totalQuiz }} Quiz Selesai</p>
+        <p class="text-xs text-gray-400 mt-0.5">{{ $totalCompleted }} dari {{ $totalSaved }} Materi Selesai</p>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
         <div class="flex items-center justify-between mb-3">
-            <div class="text-3xl font-black text-emerald-600">{{ $averageScore }}</div>
+            <div class="text-3xl font-black text-emerald-600">{{ $totalCompleted }}</div>
             <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-                <i class="bi bi-trophy text-emerald-500 text-lg"></i>
+                <i class="bi bi-check-circle text-emerald-500 text-lg"></i>
             </div>
         </div>
-        <p class="text-3xl font-black text-emerald-600 mb-1"></p>
-        <p class="text-xs text-gray-500 font-medium">Rata-rata Skor</p>
+        <p class="text-xs text-gray-500 font-medium mt-1">Materi Selesai</p>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
         <div class="flex items-center justify-between mb-3">
-            <div class="text-3xl font-black text-amber-500">{{ $completedQuiz }}</div>
+            <div class="text-3xl font-black text-amber-500">{{ $totalLearning }}</div>
             <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-                <i class="bi bi-check-circle text-amber-500 text-lg"></i>
+                <i class="bi bi-book text-amber-500 text-lg"></i>
             </div>
         </div>
-        <p class="text-xs text-gray-500 font-medium">Quiz Diselesaikan</p>
+        <p class="text-xs text-gray-500 font-medium mt-1">Sedang Dipelajari</p>
     </div>
 
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 hover:shadow-md transition-all duration-300 hover:-translate-y-1">
         <div class="flex items-center justify-between mb-3">
-            <div class="text-3xl font-black text-sky-500">{{ $totalStars }}</div>
+            <div class="text-3xl font-black text-sky-500">{{ $totalSaved }}</div>
             <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center">
-                <i class="bi bi-star-fill text-sky-500 text-lg"></i>
+                <i class="bi bi-bookmark text-sky-500 text-lg"></i>
             </div>
         </div>
-        <p class="text-xs text-gray-500 font-medium">Bintang Terkumpul ⭐</p>
+        <p class="text-xs text-gray-500 font-medium mt-1">Materi Tersimpan</p>
     </div>
 </div>
 
-{{-- Blok quiz yang belum selesai --}}
-@if ($unfinishedQuiz->isNotEmpty())
+{{-- Continue Learning --}}
+@if ($continueLearning->isNotEmpty())
 <div class="mb-8">
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-bold text-gray-900">Lanjutkan Belajar</h2>
+        <a href="{{ route('siswa.my-learning') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+            Lihat Semua <i class="bi bi-arrow-right"></i>
+        </a>
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        @foreach ($unfinishedQuiz as $quiz)
+        @foreach ($continueLearning as $materi)
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
             <div class="h-36 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
-                <i class="bi bi-pencil-square text-4xl text-white/70"></i>
+                @if ($materi->thumbnail)
+                <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
+                @else
+                <i class="bi bi-journal-bookmark-fill text-4xl text-white/70"></i>
+                @endif
             </div>
             <div class="p-5">
-                <h3 class="font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $quiz->materi->judul ?? $quiz->judul }}</h3>
-                <p class="text-xs text-gray-500 mb-4">
-                    <i class="bi bi-tag me-1"></i>{{ $quiz->materi->kategori->nama_kategori ?? 'Umum' }}
+                <h3 class="font-bold text-gray-900 mb-1 group-hover:text-indigo-600 transition-colors">{{ $materi->judul }}</h3>
+                <p class="text-xs text-gray-500 mb-2">
+                    <i class="bi bi-person me-1"></i>{{ $materi->guru->name ?? '-' }}
+                    <span class="mx-1">·</span>
+                    <i class="bi bi-bar-chart me-1"></i>{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}
                 </p>
-                {{-- Tombol kerjakan quiz --}}
-                <a href="{{ route('siswa.quiz.start', $quiz) }}" class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-indigo-50 text-indigo-700 rounded-xl text-sm font-semibold hover:bg-indigo-100 transition-colors">
-                    Kerjakan Quiz <i class="bi bi-arrow-right ms-1"></i>
+                <div class="mb-3">
+                    <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                        <span>Progress</span>
+                        <span class="font-semibold text-indigo-600">{{ $materi->pivot->progress }}%</span>
+                    </div>
+                    <div class="w-full bg-gray-100 rounded-full h-2">
+                        <div class="bg-indigo-500 h-2 rounded-full" style="width: {{ $materi->pivot->progress }}%"></div>
+                    </div>
+                </div>
+                <a href="{{ route('siswa.browse.show', $materi) }}"
+                    class="inline-flex items-center justify-center w-full px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors shadow-sm">
+                    Lanjutkan <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
         </div>
         @endforeach
     </div>
 </div>
-{{-- Tampilan ketika semua quiz sudah selesai --}}
-@else
+@endif
+
+{{-- Recently Saved --}}
+@if ($recentlySaved->isNotEmpty())
 <div class="mb-8">
     <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold text-gray-900">Lanjutkan Belajar</h2>
+        <h2 class="text-xl font-bold text-gray-900">Baru Disimpan</h2>
+        <a href="{{ route('siswa.my-learning') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+            Lihat Semua <i class="bi bi-arrow-right"></i>
+        </a>
     </div>
-    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
-        <div class="text-4xl mb-3">🎉</div>
-        <h3 class="text-lg font-semibold text-gray-900 mb-1">Selamat!</h3>
-        <p class="text-gray-500 text-sm">Kamu sudah menyelesaikan seluruh quiz yang tersedia.</p>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        @foreach ($recentlySaved as $materi)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+            <div class="h-24 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
+                @if ($materi->thumbnail)
+                <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
+                @else
+                <i class="bi bi-bookmark text-2xl text-white/70"></i>
+                @endif
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-gray-900 text-sm mb-1 group-hover:text-indigo-600 transition-colors">{{ $materi->judul }}</h3>
+                <p class="text-xs text-gray-500">{{ $materi->guru->name ?? '-' }}</p>
+            </div>
+        </div>
+        @endforeach
     </div>
 </div>
 @endif
 
-{{-- Blok riwayat quiz terbaru --}}
-@if ($recentAttempts->isNotEmpty())
-<div>
+{{-- Recommended Materials --}}
+@if ($recommended->isNotEmpty())
+<div class="mb-8">
     <div class="flex items-center justify-between mb-4">
-        <h2 class="text-xl font-bold text-gray-900">Riwayat Quiz Terbaru</h2>
-        {{-- Tautan ke halaman riwayat lengkap --}}
+        <h2 class="text-xl font-bold text-gray-900">Rekomendasi Materi</h2>
+        <a href="{{ route('siswa.browse.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+            Jelajahi Semua <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        @foreach ($recommended as $materi)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+            <div class="h-24 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
+                @if ($materi->thumbnail)
+                <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
+                @else
+                <i class="bi bi-journal text-2xl text-white/70"></i>
+                @endif
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-gray-900 text-sm mb-1 group-hover:text-indigo-600 transition-colors">{{ $materi->judul }}</h3>
+                <p class="text-xs text-gray-500 mb-1">{{ $materi->guru->name ?? '-' }}</p>
+                <p class="text-xs text-gray-400">{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }} · {{ $materi->kategori->nama_kategori ?? '-' }}</p>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
+@endif
+
+{{-- Browse Categories --}}
+@if ($categories->isNotEmpty())
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-900">Jelajahi Kategori</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+        @foreach ($categories as $category)
+        <a href="{{ route('siswa.browse.by-category', $category) }}"
+            class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-all duration-300 hover:-translate-y-1 text-center group">
+            <p class="font-semibold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors">{{ $category->nama_kategori }}</p>
+            <p class="text-xs text-gray-400 mt-1">{{ $category->materi_count }} materi</p>
+        </a>
+        @endforeach
+    </div>
+</div>
+@endif
+
+{{-- Browse Teachers --}}
+@if ($teachers->isNotEmpty())
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-900">Jelajahi Guru</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+        @foreach ($teachers as $teacher)
+        <a href="{{ route('siswa.browse.teacher-profile', $teacher) }}"
+            class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md transition-all duration-300 hover:-translate-y-1 flex items-center gap-3 group">
+            @if ($teacher->avatar)
+            <img src="{{ $teacher->avatar }}" class="w-10 h-10 rounded-full object-cover">
+            @else
+            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                <i class="bi bi-person text-gray-400"></i>
+            </div>
+            @endif
+            <div class="text-left">
+                <p class="font-semibold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors">{{ $teacher->name }}</p>
+                <p class="text-xs text-gray-400">{{ $teacher->materi_count }} materi</p>
+            </div>
+        </a>
+        @endforeach
+    </div>
+</div>
+@endif
+
+{{-- Recent Quiz Results --}}
+@if ($recentAttempts->isNotEmpty())
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-900">Hasil Quiz Terbaru</h2>
         <a href="{{ route('siswa.quiz.history') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
             Lihat Semua <i class="bi bi-arrow-right"></i>
         </a>
     </div>
     <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div class="overflow-x-auto">
-            {{-- Tabel riwayat quiz --}}
             <table class="w-full">
                 <thead>
                     <tr class="bg-gray-50 border-b border-gray-100">
                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Quiz</th>
+                        <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Materi</th>
                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Skor</th>
                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Bintang</th>
                         <th class="text-left px-5 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Tanggal</th>
@@ -124,6 +230,7 @@
                     @foreach ($recentAttempts as $attempt)
                     <tr class="hover:bg-gray-50 transition-colors">
                         <td class="px-5 py-3 text-sm font-medium text-gray-900">{{ $attempt->quiz->judul ?? '-' }}</td>
+                        <td class="px-5 py-3 text-sm text-gray-500">{{ $attempt->quiz->materi->judul ?? '-' }}</td>
                         <td class="px-5 py-3">
                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold {{ $attempt->skor_persen >= 80 ? 'bg-emerald-50 text-emerald-700' : ($attempt->skor_persen >= 60 ? 'bg-amber-50 text-amber-700' : 'bg-red-50 text-red-700') }}">
                                 {{ $attempt->skor_persen }}%
@@ -146,23 +253,39 @@
         </div>
     </div>
 </div>
-{{-- Tampilan ketika tidak ada riwayat quiz --}}
-@else
-<div class="text-center py-12">
-    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <i class="bi bi-journal text-3xl text-gray-400"></i>
+@endif
+
+{{-- Latest Published Materials --}}
+@if ($latestPublished->isNotEmpty())
+<div class="mb-8">
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-900">Materi Terbaru</h2>
+        <a href="{{ route('siswa.browse.index') }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">
+            Jelajahi Semua <i class="bi bi-arrow-right"></i>
+        </a>
     </div>
-    <h3 class="text-lg font-semibold text-gray-900 mb-1">Belum ada riwayat quiz</h3>
-    <p class="text-gray-500 text-sm">Mulai kerjakan quiz untuk melihat riwayatmu!</p>
-    {{-- Tombol navigasi ke daftar quiz --}}
-    <a href="{{ route('siswa.quiz.index') }}" class="inline-flex items-center mt-4 px-6 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold hover:bg-indigo-700 transition-colors shadow-sm">
-        Lihat Quiz Tersedia
-    </a>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        @foreach ($latestPublished as $materi)
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+            <div class="h-24 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
+                @if ($materi->thumbnail)
+                <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
+                @else
+                <i class="bi bi-journal text-2xl text-white/70"></i>
+                @endif
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-gray-900 text-sm mb-1 group-hover:text-indigo-600 transition-colors">{{ $materi->judul }}</h3>
+                <p class="text-xs text-gray-500 mb-1">{{ $materi->guru->name ?? '-' }}</p>
+                <p class="text-xs text-gray-400">{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }} · {{ $materi->kategori->nama_kategori ?? '-' }}</p>
+            </div>
+        </div>
+        @endforeach
+    </div>
 </div>
 @endif
 @endsection
 
-{{-- CSS gradien untuk kategori materi --}}
 @push('styles')
 <style>
     .bg-gradient-mtk { background: linear-gradient(135deg, #6366f1, #8b5cf6); }

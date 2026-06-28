@@ -37,6 +37,7 @@ class GoogleAuthController extends Controller
 
         return match ($user->role) {
             'siswa' => redirect()->intended(route('siswa.dashboard')),
+            'orang_tua' => redirect()->intended(route('orang-tua.dashboard')),
             default => redirect()->intended(route('dashboard.index')),
         };
     }

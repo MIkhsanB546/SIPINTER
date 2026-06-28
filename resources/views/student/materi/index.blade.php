@@ -20,15 +20,15 @@
                 class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 placeholder="Cari judul atau deskripsi...">
         </div>
-        {{-- Filter jenjang --}}
+        {{-- Filter tingkat kesulitan --}}
         <div>
-            <label for="jenjang" class="block text-sm font-medium text-gray-700 mb-1">Jenjang</label>
-            <select id="jenjang" name="jenjang"
+            <label for="tingkat" class="block text-sm font-medium text-gray-700 mb-1">Tingkat Kesulitan</label>
+            <select id="tingkat" name="tingkat"
                 class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                <option value="">Semua Jenjang</option>
-                @foreach ($jenjangList as $j)
-                    <option value="{{ $j->id_jenjang }}" {{ request('jenjang') == $j->id_jenjang ? 'selected' : '' }}>
-                        {{ $j->nama_jenjang }}
+                <option value="">Semua Tingkat</option>
+                @foreach ($tingkatList as $j)
+                    <option value="{{ $j->id_tingkat }}" {{ request('tingkat') == $j->id_tingkat ? 'selected' : '' }}>
+                        {{ $j->nama_tingkat }}
                     </option>
                 @endforeach
             </select>
@@ -101,7 +101,7 @@ $kategoriColors = [
                         <i class="bi bi-person me-1"></i>{{ $materi->guru->name ?? '-' }}
                     </p>
                     <p class="text-xs text-gray-500 mb-3">
-                        <i class="bi bi-bar-chart me-1"></i>{{ $materi->jenjang->nama_jenjang ?? '-' }}
+                        <i class="bi bi-bar-chart me-1"></i>{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}
                     </p>
                     {{-- Tombol aksi kartu --}}
                     <div class="flex gap-2">

@@ -4,7 +4,6 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
 
-            {{-- Logo --}}
             <a href="{{ route('siswa.dashboard') }}" class="flex items-center gap-2 shrink-0">
                 <img src="{{ asset('images/sipinter-logo.png') }}" alt="SIPINTER" class="h-10 w-auto">
                 <div>
@@ -13,17 +12,21 @@
                 </div>
             </a>
 
-            {{-- Desktop Nav --}}
             <div class="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
                 <a href="{{ route('siswa.dashboard') }}"
                    class="px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150
                    {{ request()->routeIs('siswa.dashboard') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
                     <i class="bi bi-grid-fill me-1"></i>Dashboard
                 </a>
-                <a href="{{ route('siswa.materi.index') }}"
+                <a href="{{ route('siswa.browse.index') }}"
                    class="px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150
-                   {{ request()->routeIs('siswa.materi.*') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
-                    <i class="bi bi-book me-1"></i>Materi Saya
+                   {{ request()->routeIs('siswa.browse.*') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
+                    <i class="bi bi-compass me-1"></i>Jelajahi
+                </a>
+                <a href="{{ route('siswa.my-learning') }}"
+                   class="px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150
+                   {{ request()->routeIs('siswa.my-learning') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
+                    <i class="bi bi-book me-1"></i>My Learning
                 </a>
                 <a href="{{ route('siswa.quiz.index') }}"
                    class="px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150
@@ -37,7 +40,6 @@
                 </a>
             </div>
 
-            {{-- Desktop User --}}
             <div class="hidden lg:flex items-center">
                 <div class="relative" @click.away="userOpen = false">
                     <button @click="userOpen = !userOpen"
@@ -83,7 +85,6 @@
                 </div>
             </div>
 
-            {{-- Mobile Hamburger --}}
             <button @click="mobileOpen = !mobileOpen"
                     class="lg:hidden p-2 rounded-lg transition-colors duration-150 hover:bg-gray-100"
                     aria-label="Toggle navigation">
@@ -92,7 +93,6 @@
             </button>
         </div>
 
-        {{-- Mobile Menu --}}
         <div x-show="mobileOpen"
              x-cloak
              x-transition:enter="transition ease-out duration-200"
@@ -108,10 +108,15 @@
                {{ request()->routeIs('siswa.dashboard') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
                 <i class="bi bi-grid-fill"></i>Dashboard
             </a>
-            <a href="{{ route('siswa.materi.index') }}"
+            <a href="{{ route('siswa.browse.index') }}"
                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150
-               {{ request()->routeIs('siswa.materi.*') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
-                <i class="bi bi-book"></i>Materi Saya
+               {{ request()->routeIs('siswa.browse.*') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
+                <i class="bi bi-compass"></i>Jelajahi
+            </a>
+            <a href="{{ route('siswa.my-learning') }}"
+               class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150
+               {{ request()->routeIs('siswa.my-learning') ? 'nav-link-active' : 'text-gray-700 nav-link-inactive' }}">
+                <i class="bi bi-book"></i>My Learning
             </a>
             <a href="{{ route('siswa.quiz.index') }}"
                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150

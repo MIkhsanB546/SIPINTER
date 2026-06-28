@@ -22,6 +22,7 @@ class LandingController extends Controller
             $user = Auth::user();
             return match ($user->role) {
                 'siswa' => redirect()->route('siswa.dashboard'),
+                'orang_tua' => redirect()->route('orang-tua.dashboard'),
                 default => redirect()->route('dashboard.index'),
             };
         }

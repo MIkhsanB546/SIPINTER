@@ -132,6 +132,7 @@
                                         style="border-color: #DDE7EF;">
                                         <option value="guru" {{ old('role') === 'guru' ? 'selected' : '' }}>Guru</option>
                                         <option value="siswa" {{ old('role') === 'siswa' ? 'selected' : '' }}>Siswa</option>
+                                        <option value="orang_tua" {{ old('role') === 'orang_tua' ? 'selected' : '' }}>Orang Tua</option>
                                     </select>
                                     <label for="regRole">Daftar sebagai</label>
                                 </div>

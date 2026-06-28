@@ -34,13 +34,13 @@ $gradient = $kategoriColors[$materi->kategori->nama_kategori ?? ''] ?? 'from-ind
                 @endif
             </div>
             <div class="p-6">
-                {{-- Badge kategori dan jenjang --}}
+                {{-- Badge kategori dan tingkat --}}
                 <div class="flex flex-wrap gap-2 mb-4">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700">
                         {{ $materi->kategori->nama_kategori ?? 'Umum' }}
                     </span>
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                        {{ $materi->jenjang->nama_jenjang ?? '-' }}
+                        {{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}
                     </span>
                 </div>
 
@@ -90,8 +90,8 @@ $gradient = $kategoriColors[$materi->kategori->nama_kategori ?? ''] ?? 'from-ind
                     <p class="font-medium text-gray-900">{{ $materi->kategori->nama_kategori ?? '-' }}</p>
                 </div>
                 <div>
-                    <p class="text-gray-500 text-xs">Jenjang</p>
-                    <p class="font-medium text-gray-900">{{ $materi->jenjang->nama_jenjang ?? '-' }}</p>
+                    <p class="text-gray-500 text-xs">Tingkat Kesulitan</p>
+                    <p class="font-medium text-gray-900">{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }}</p>
                 </div>
                 <div>
                     <p class="text-gray-500 text-xs">Guru</p>
