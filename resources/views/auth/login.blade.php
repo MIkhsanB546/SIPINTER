@@ -48,6 +48,29 @@
         a.text-si-primary:hover {
             color: var(--si-primary-hover) !important;
         }
+
+        .password-toggle {
+            position: absolute;
+            top: 50%;
+            right: 0.75rem;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            padding: 0.25rem;
+            cursor: pointer;
+            z-index: 5;
+            line-height: 1;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .password-toggle:hover {
+            color: #495057;
+        }
+        .password-toggle:focus {
+            outline: none;
+        }
     </style>
     @stack('styles')
 </head>
@@ -108,9 +131,13 @@
                                 </span>
                                 <div class="form-floating flex-grow-1">
                                     <input id="loginPassword" name="password" type="password"
-                                        class="form-control border-start-0 rounded-end-4 @error('password') is-invalid @enderror"
+                                        class="form-control border-start-0 rounded-end-4 pe-5 @error('password') is-invalid @enderror"
                                         placeholder="Password" style="border-color: #DDE7EF;">
                                     <label for="loginPassword">Password</label>
+                                    <button type="button" class="password-toggle" data-target="loginPassword"
+                                        aria-label="Tampilkan password" title="Tampilkan password" tabindex="-1">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
                                 </div>
                                 @error('password')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -168,6 +195,7 @@
     {{-- Scripts --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous">
     </script>
+    <script src="{{ asset('js/password-toggle.js') }}"></script>
     @stack('scripts')
 </body>
 
