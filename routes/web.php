@@ -32,6 +32,17 @@ Route::get('/styleguide', [StyleGuideController::class, 'index'])->name('stylegu
 Route::get('/styleguide/student', [StyleGuideController::class, 'student'])->name('styleguide.student');
 Route::get('/styleguide/admin', [StyleGuideController::class, 'admin'])->name('styleguide.admin');
 
+Route::get('/debug-request', function () {
+    return response()->json([
+        'url' => request()->fullUrl(),
+        'scheme' => request()->getScheme(),
+        'secure' => request()->isSecure(),
+        'host' => request()->getHost(),
+        'headers' => request()->headers->all(),
+    ]);
+});
+
+
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'create'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
