@@ -20,8 +20,8 @@ use App\Http\Controllers\Student\MateriController as StudentMateriController;
 use App\Http\Controllers\Student\BrowseController;
 use App\Http\Controllers\Student\MyLearningController;
 use App\Http\Controllers\Student\QuizController as StudentQuizController;
-use App\Http\Controllers\Student\ProfileController as StudentProfileController;
 use App\Http\Controllers\OrangTua\DashboardController as OrangTuaDashboardController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StyleGuideController;
 use Illuminate\Support\Facades\Route;
@@ -123,9 +123,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/quiz/{quiz}/result/{attempt}', [StudentQuizController::class, 'result'])->name('quiz.result');
         Route::get('/quiz-history', [StudentQuizController::class, 'history'])->name('quiz.history');
 
-        Route::get('/profile', [StudentProfileController::class, 'index'])->name('profile');
-        Route::put('/profile', [StudentProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile/delete', [StudentProfileController::class, 'destroy'])->name('profile.delete');
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete');
     });
 
     // ============================================================
@@ -133,5 +133,18 @@ Route::middleware('auth')->group(function () {
     // ============================================================
     Route::middleware('orang_tua')->prefix('orang-tua')->name('orang-tua.')->group(function () {
         Route::get('/', [OrangTuaDashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete');
+    });
+
+    // ============================================================
+    // Guru Profile (student-style)
+    // ============================================================
+    Route::middleware('guru')->prefix('guru')->name('guru.')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+        Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.delete');
     });
 });
