@@ -34,4 +34,14 @@ class MateriSiswa extends Pivot
     {
         return $this->belongsTo(Materi::class, 'id_materi');
     }
+
+    public function scopeSiswa($query, $idSiswa)
+    {
+        return $query->where('id_siswa', $idSiswa);
+    }
+
+    public function scopeByStatus($query, $status)
+    {
+        return $query->where('status', $status);
+    }
 }

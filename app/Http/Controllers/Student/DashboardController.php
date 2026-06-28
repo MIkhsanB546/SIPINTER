@@ -55,10 +55,16 @@ class DashboardController extends Controller
             ->orderBy('name')
             ->get();
 
-        // Progress summary
-        $totalSaved = MateriSiswa::where('id_siswa', $siswaId)->count();
-        $totalLearning = MateriSiswa::where('id_siswa', $siswaId)->where('status', 'learning')->count();
-        $totalCompleted = MateriSiswa::where('id_siswa', $siswaId)->where('status', 'completed')->count();
+        // Progress summary — single aggregate query
+        $progressSummary = MateriSiswa::where('id_siswa', $siswaId)
+            ->selectRaw('COUNT(*) as total_saved')
+            ->selectRaw('SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as total_learning', ['learning'])
+            ->selectRaw('SUM(CASE WHEN status = ? THEN 1 ELSE 0 END) as total_completed', ['completed'])
+            ->first();
+
+        $totalSaved = $progressSummary->total_saved;
+        $totalLearning = $progressSummary->total_learning;
+        $totalCompleted = $progressSummary->total_completed;
         $overallProgress = $totalSaved > 0 ? round(($totalCompleted / $totalSaved) * 100) : 0;
 
         // Recent quiz results

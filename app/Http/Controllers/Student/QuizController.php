@@ -60,6 +60,18 @@ class QuizController extends Controller
             'attempt_ke' => $attemptKe,
         ]);
 
+        // Transition saved -> learning
+        $materiSiswa = MateriSiswa::where('id_siswa', $siswaId)
+            ->where('id_materi', $quiz->id_materi)
+            ->first();
+
+        if ($materiSiswa && $materiSiswa->status === 'saved') {
+            $materiSiswa->update([
+                'status' => 'learning',
+                'started_at' => $materiSiswa->started_at ?? now(),
+            ]);
+        }
+
         $quiz->load('soal.pilihanJawaban');
 
         return view('student.quiz.show', compact('quiz', 'attempt'));
@@ -108,41 +120,42 @@ class QuizController extends Controller
             'bintang' => $bintang,
         ]);
 
-        // Update materi_siswa progress
+        // Update materi_siswa progress based on best attempt per quiz (threshold >= 70)
         $materi = $quiz->materi;
-        $totalSoals = $materi->quiz->flatMap->soal->count();
-        $completedSoals = QuizAttempt::where('id_siswa', Auth::id())
-            ->whereIn('id_quiz', $materi->quiz->pluck('id_quiz'))
-            ->where('skor_persen', '>', 0)
-            ->count();
+        $quizIds = $materi->quiz->pluck('id_quiz');
+        $totalQuizzes = $quizIds->count();
 
-        // Count unique quizzes that have at least one completed attempt
-        $completedQuizCount = QuizAttempt::where('id_siswa', Auth::id())
-            ->whereIn('id_quiz', $materi->quiz->pluck('id_quiz'))
-            ->where('skor_persen', '>', 0)
-            ->distinct('id_quiz')
-            ->count('id_quiz');
+        $passedQuizIds = QuizAttempt::where('id_siswa', Auth::id())
+            ->whereIn('id_quiz', $quizIds)
+            ->selectRaw('id_quiz, MAX(skor_persen) as best_skor')
+            ->groupBy('id_quiz')
+            ->having('best_skor', '>=', 70)
+            ->pluck('id_quiz');
 
-        $totalQuizzes = $materi->quiz->count();
-        $newProgress = $totalQuizzes > 0 ? round(($completedQuizCount / $totalQuizzes) * 100) : 0;
+        $passedCount = $passedQuizIds->count();
+        $newProgress = $totalQuizzes > 0 ? round(($passedCount / $totalQuizzes) * 100) : 0;
 
         $materiSiswa = MateriSiswa::where('id_siswa', Auth::id())
             ->where('id_materi', $materi->id_materi)
             ->first();
 
         if ($materiSiswa) {
-            $status = $newProgress >= 100 ? 'completed' : 'learning';
-            $updateData = [
-                'progress' => min($newProgress, 100),
-                'status' => $status,
-            ];
-
-            if ($status === 'learning' && !$materiSiswa->started_at) {
-                $updateData['started_at'] = now();
+            if ($newProgress >= 100) {
+                $updateData = [
+                    'progress' => 100,
+                    'status' => 'completed',
+                    'completed_at' => $materiSiswa->completed_at ?? now(),
+                ];
+            } else {
+                $updateData = [
+                    'progress' => $newProgress,
+                    'status' => 'learning',
+                    'completed_at' => null,
+                ];
             }
 
-            if ($status === 'completed' && !$materiSiswa->completed_at) {
-                $updateData['completed_at'] = now();
+            if (!$materiSiswa->started_at) {
+                $updateData['started_at'] = now();
             }
 
             $materiSiswa->update($updateData);
