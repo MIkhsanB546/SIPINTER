@@ -112,7 +112,8 @@
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         @foreach ($recentlySaved as $materi)
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+        <a href="{{ route('siswa.browse.show', $materi) }}"
+            class="block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
             <div class="h-24 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
                 @if ($materi->thumbnail)
                 <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
@@ -124,7 +125,7 @@
                 <h3 class="font-bold text-gray-900 text-sm mb-1 group-hover:text-indigo-600 transition-colors">{{ $materi->judul }}</h3>
                 <p class="text-xs text-gray-500">{{ $materi->guru->name ?? '-' }}</p>
             </div>
-        </div>
+        </a>
         @endforeach
     </div>
 </div>
@@ -141,7 +142,8 @@
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         @foreach ($recommended as $materi)
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+        <a href="{{ route('siswa.browse.show', $materi) }}"
+            class="block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
             <div class="h-24 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
                 @if ($materi->thumbnail)
                 <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
@@ -154,7 +156,7 @@
                 <p class="text-xs text-gray-500 mb-1">{{ $materi->guru->name ?? '-' }}</p>
                 <p class="text-xs text-gray-400">{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }} · {{ $materi->kategori->nama_kategori ?? '-' }}</p>
             </div>
-        </div>
+        </a>
         @endforeach
     </div>
 </div>
@@ -266,7 +268,8 @@
     </div>
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
         @foreach ($latestPublished as $materi)
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
+        <a href="{{ route('siswa.browse.show', $materi) }}"
+            class="block bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1 group">
             <div class="h-24 {{ $colors[$loop->index % count($colors)] ?? 'bg-gradient-to-br from-indigo-400 to-purple-500' }} flex items-center justify-center">
                 @if ($materi->thumbnail)
                 <img src="{{ asset('storage/' . $materi->thumbnail) }}" alt="{{ $materi->judul }}" class="w-full h-full object-cover">
@@ -279,7 +282,7 @@
                 <p class="text-xs text-gray-500 mb-1">{{ $materi->guru->name ?? '-' }}</p>
                 <p class="text-xs text-gray-400">{{ $materi->tingkatKesulitan->nama_tingkat ?? '-' }} · {{ $materi->kategori->nama_kategori ?? '-' }}</p>
             </div>
-        </div>
+        </a>
         @endforeach
     </div>
 </div>
