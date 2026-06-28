@@ -181,7 +181,8 @@
                                 <img src="{{ Auth::user()->avatar }}" class="user-image rounded-circle shadow"
                                     alt="Avatar" />
                             @else
-                                <i class="bi bi-person-circle fs-3" style="color: #6c757d;"></i>
+                                <img src="{{ asset('images/default-user.jpg') }}" class="user-image rounded-circle shadow"
+                                    alt="Default Avatar" />
                             @endif
                             <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                         </a>
@@ -192,8 +193,8 @@
                                     <img src="{{ Auth::user()->avatar }}" class="rounded-circle shadow"
                                         alt="Avatar" />
                                 @else
-                                    <i class="bi bi-person-circle"
-                                        style="font-size: 5rem; color: rgba(255,255,255,0.8);"></i>
+                                    <img src="{{ asset('images/default-user.jpg') }}" class="rounded-circle shadow"
+                                        alt="Default Avatar" />
                                 @endif
                                 <p>
                                     {{ Auth::user()->name }}
