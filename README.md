@@ -11,7 +11,7 @@ Aplikasi ini dikembangkan sebagai proyek **IT Bootcamp Kelompok 10**.
 # Screenshots
 
 ![Landing Page](screenshots/Landing%20page.png)
-![Login](screenshots/login.png)
+![Login](screenshots/Login.png)
 ![Dashboard Siswa](screenshots/Dashboard%20siswa.png)
 ![Dashboard Guru](screenshots/Dashboard%20guru.png)
 
