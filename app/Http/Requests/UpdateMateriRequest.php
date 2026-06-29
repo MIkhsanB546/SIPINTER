@@ -21,6 +21,7 @@ class UpdateMateriRequest extends FormRequest
             'file_materi' => ['nullable', 'file', 'mimes:pdf,docx,pptx', 'max:20480'],
             'thumbnail' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
             'is_published' => ['nullable', 'boolean'],
+            'quiz_data' => ['nullable', 'json'],
         ];
     }
 

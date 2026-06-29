@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMateriRequest;
 use App\Http\Requests\UpdateMateriRequest;
 use App\Models\Materi;
+use App\Models\Quiz;
+use App\Models\Soal;
+use App\Models\PilihanJawaban;
 use App\Models\TingkatKesulitan;
 use App\Models\KategoriMateri;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +54,9 @@ class MateriController extends Controller
 
         $data['is_published'] = $request->boolean('is_published');
 
-        Materi::create($data);
+        $materi = Materi::create($data);
+
+        $this->saveQuizData($materi, $request->input('quiz_data'));
 
         return redirect()->route('dashboard.materi.index')
             ->with('success', 'Materi berhasil dibuat.');
@@ -69,6 +74,7 @@ class MateriController extends Controller
         $this->authorize('update', $materi);
         $tingkatList = TingkatKesulitan::all();
         $kategoriList = KategoriMateri::all();
+        $materi->load('quiz.soal.pilihanJawaban');
         return view('dashboard.materi.edit', compact('materi', 'tingkatList', 'kategoriList'));
     }
 
@@ -96,8 +102,65 @@ class MateriController extends Controller
 
         $materi->update($data);
 
+        $this->saveQuizData($materi, $request->input('quiz_data'));
+
         return redirect()->route('dashboard.materi.index')
             ->with('success', 'Materi berhasil diperbarui.');
+    }
+
+    protected function saveQuizData(Materi $materi, ?string $quizDataJson): void
+    {
+        if (empty($quizDataJson)) {
+            return;
+        }
+
+        $quizData = json_decode($quizDataJson, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE || empty($quizData)) {
+            return;
+        }
+
+        $existingQuiz = $materi->quiz()->first();
+
+        if ($existingQuiz) {
+            $existingQuiz->update([
+                'judul' => $quizData['judul'] ?? $existingQuiz->judul,
+                'deskripsi' => $quizData['deskripsi'] ?? null,
+                'durasi_menit' => $quizData['durasi_menit'] ?? null,
+            ]);
+            $quiz = $existingQuiz;
+        } else {
+            $quiz = Quiz::create([
+                'id_materi' => $materi->id_materi,
+                'judul' => $quizData['judul'] ?? 'Quiz ' . $materi->judul,
+                'deskripsi' => $quizData['deskripsi'] ?? null,
+                'durasi_menit' => $quizData['durasi_menit'] ?? null,
+            ]);
+        }
+
+        if (isset($quizData['soal']) && is_array($quizData['soal'])) {
+            $quiz->soal()->delete();
+
+            foreach ($quizData['soal'] as $soalItem) {
+                $soal = Soal::create([
+                    'id_quiz' => $quiz->id_quiz,
+                    'pertanyaan' => $soalItem['pertanyaan'],
+                ]);
+
+                $jawabanBenar = (int) ($soalItem['jawaban_benar'] ?? 0);
+                $options = $soalItem['options'] ?? $soalItem['pilihan'] ?? [];
+
+                foreach ($options as $index => $option) {
+                    $jawaban = is_array($option) ? ($option['jawaban'] ?? '') : $option;
+
+                    PilihanJawaban::create([
+                        'id_soal' => $soal->id_soal,
+                        'jawaban' => $jawaban,
+                        'is_correct' => $index === $jawabanBenar,
+                    ]);
+                }
+            }
+        }
     }
 
     public function destroy(Materi $materi)

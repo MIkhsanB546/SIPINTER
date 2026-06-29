@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\TingkatKesulitanController;
 use App\Http\Controllers\Dashboard\KategoriMateriController;
 use App\Http\Controllers\Dashboard\HasilSiswaController;
+use App\Http\Controllers\Dashboard\AIController;
 use App\Http\Controllers\Dashboard\LaporanController;
 use App\Http\Controllers\Dashboard\ProfileController as DashboardProfileController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
@@ -73,6 +74,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('materi', DashboardMateriController::class)->parameters([
             'materi' => 'materi'
         ]);
+
+        Route::post('materi/ai/summarize', [AIController::class, 'summarize'])->name('materi.ai.summarize');
+        Route::post('materi/ai/generate-quiz', [AIController::class, 'generateQuiz'])->name('materi.ai.generate-quiz');
 
         Route::resource('quiz', DashboardQuizController::class)->parameters([
             'quiz' => 'quiz'
