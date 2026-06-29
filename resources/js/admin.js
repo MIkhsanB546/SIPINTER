@@ -1,4 +1,5 @@
-import 'bootstrap/dist/js/bootstrap.bundle';
+import bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
+window.bootstrap = bootstrap;
 import $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs5';
