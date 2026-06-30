@@ -22,7 +22,10 @@ class GeminiService
     public function summarizePdf(string $pdfText): string
     {
         $prompt = $this->buildSummaryPrompt($pdfText);
-        return $this->sendRequest($prompt);
+
+        $response = $this->sendRequest($prompt);
+
+        return $this->cleanSummaryText($response);
     }
 
     public function generateQuiz(string $pdfText, ?string $userPrompt = null): array
@@ -56,15 +59,27 @@ class GeminiService
 
     protected function buildSummaryPrompt(string $pdfText): string
     {
-        return "Buatlah ringkasan dari teks berikut dalam Bahasa Indonesia.\n\n"
-            . "Ketentuan:\n"
-            . "- Gunakan Bahasa Indonesia yang baik dan benar\n"
-            . "- Singkat, padat, dan mudah dipahami siswa\n"
-            . "- Jangan menambahkan informasi baru di luar teks\n"
-            . "- Jangan menghilangkan konsep penting\n"
-            . "- Maksimal sekitar 500 kata\n"
-            . "- Format paragraf yang rapi\n\n"
-            . "Teks:\n{$pdfText}";
+        return "Buatlah ringkasan dari materi berikut dalam Bahasa Indonesia.\n\n"
+
+            . "ATURAN YANG WAJIB DIIKUTI:\n"
+
+            . "- Gunakan Bahasa Indonesia yang baik dan benar.\n"
+            . "- Gunakan bahasa yang mudah dipahami siswa.\n"
+            . "- Ringkas namun tetap mempertahankan konsep penting.\n"
+            . "- Jangan menambahkan informasi di luar materi.\n"
+            . "- Maksimal sekitar 500 kata.\n"
+            . "- Gunakan paragraf biasa.\n"
+            . "- Jangan menggunakan Markdown dalam bentuk apa pun.\n"
+            . "- Jangan gunakan **bold**.\n"
+            . "- Jangan gunakan *italic*.\n"
+            . "- Jangan gunakan heading (# atau ##).\n"
+            . "- Jangan gunakan tabel.\n"
+            . "- Jangan gunakan code block.\n"
+            . "- Jangan gunakan ```.\n"
+            . "- Jangan gunakan emoji.\n"
+            . "- Hasil harus berupa plain text yang siap langsung dimasukkan ke textarea Laravel.\n\n"
+
+            . "Materi:\n{$pdfText}";
     }
 
     protected function buildQuizPrompt(string $pdfText, ?string $userPrompt = null): string
@@ -101,6 +116,35 @@ class GeminiService
     {
         $text = preg_replace('/^```(?:json)?\s*\n?/im', '', $text);
         $text = preg_replace('/\n?```\s*$/im', '', $text);
+        return trim($text);
+    }
+
+    protected function cleanSummaryText(string $text): string
+    {
+        // Hilangkan code block
+        $text = preg_replace('/```[\s\S]*?```/', '', $text);
+
+        // Hilangkan heading markdown
+        $text = preg_replace('/^\s*#{1,6}\s*/m', '', $text);
+
+        // Bold
+        $text = preg_replace('/\*\*(.*?)\*\*/', '$1', $text);
+
+        // Italic
+        $text = preg_replace('/\*(.*?)\*/', '$1', $text);
+
+        // Bold underscore
+        $text = preg_replace('/__(.*?)__/', '$1', $text);
+
+        // Italic underscore
+        $text = preg_replace('/_(.*?)_/', '$1', $text);
+
+        // Bullet markdown
+        $text = preg_replace('/^\s*[-*+]\s+/m', '- ', $text);
+
+        // Rapikan spasi kosong berlebih
+        $text = preg_replace("/\n{3,}/", "\n\n", $text);
+
         return trim($text);
     }
 
