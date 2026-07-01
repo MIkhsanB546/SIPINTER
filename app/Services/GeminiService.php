@@ -64,6 +64,13 @@ class GeminiService
         return $this->sendRequest($prompt);
     }
 
+    public function chatWithContext(string $message, array $materials, array $quizzes): string
+    {
+        $prompt = $this->buildContextPrompt($message, $materials, $quizzes);
+
+        return $this->sendRequest($prompt);
+    }
+
     protected function buildChatPrompt(string $message): string
     {
         return "Kamu adalah SIPI AI, asisten pembelajaran resmi SIPINTER.\n\n"
@@ -81,6 +88,74 @@ class GeminiService
             . "- Jika pertanyaan di luar pendidikan, tetap jawab secara sopan\n"
             . "- Jangan berpura-pura menjadi manusia\n\n"
             . "Pesan user:\n{$message}";
+    }
+
+    protected function buildContextPrompt(string $message, array $materials, array $quizzes): string
+    {
+        $context = "Kamu adalah SIPI AI, asisten pembelajaran resmi SIPINTER.\n\n"
+            . "Tugasmu:\n"
+            . "- membantu memahami materi\n"
+            . "- menjawab pertanyaan pelajaran\n"
+            . "- menjelaskan konsep\n"
+            . "- membantu belajar\n"
+            . "- membantu memahami soal\n"
+            . "- memberi motivasi belajar\n"
+            . "- membantu navigasi aplikasi SIPINTER\n\n"
+            . "Gunakan Bahasa Indonesia.\n\n"
+            . "ATURAN:\n"
+            . "- Jawab singkat, jelas, ramah, mudah dipahami siswa\n"
+            . "- Jika pertanyaan di luar pendidikan, tetap jawab secara sopan\n"
+            . "- Jangan berpura-pura menjadi manusia\n"
+            . "- Jangan pernah menghasilkan URL, HTML, atau JavaScript\n"
+            . "- Output WAJIB berupa JSON, tidak boleh ada teks lain di luar JSON\n\n";
+
+        if (!empty($materials)) {
+            $context .= "MATERI TERSAFEL DI SISTEM:\n";
+            foreach ($materials as $m) {
+                $context .= "- ID {$m['id']}: {$m['judul']}\n";
+            }
+            $context .= "\n";
+        }
+
+        if (!empty($quizzes)) {
+            $context .= "QUIZ TERSAFEL DI SISTEM:\n";
+            foreach ($quizzes as $q) {
+                $context .= "- ID {$q['id']}: {$q['judul']}\n";
+            }
+            $context .= "\n";
+        }
+
+        $context .= "Jika pengguna meminta membuka halaman, mengerjakan quiz, mempelajari materi, melihat progress, dashboard, profil, atau riwayat, gunakan action JSON.\n\n"
+            . "Format response JSON:\n"
+            . "{\n"
+            . "  \"reply\": \"Teks jawaban untuk user\",\n"
+            . "  \"action\": {\n"
+            . "    \"type\": \"open_material\",\n"
+            . "    \"material_id\": 1,\n"
+            . "    \"button\": \"Buka Materi\"\n"
+            . "  }\n"
+            . "}\n\n"
+            . "Jika tidak ada action yang cocok, set action ke null:\n"
+            . "{\n"
+            . "  \"reply\": \"Teks jawaban\",\n"
+            . "  \"action\": null\n"
+            . "}\n\n"
+            . "ACTION YANG DIDUKUNG:\n"
+            . "- open_material (material_id dari daftar di atas)\n"
+            . "- open_quiz (quiz_id dari daftar di atas)\n"
+            . "- open_dashboard\n"
+            . "- open_profile\n"
+            . "- open_saved_materials\n"
+            . "- open_learning_progress\n"
+            . "- open_quiz_history\n"
+            . "- search_material\n\n"
+            . "PENTING:\n"
+            . "- Hanya gunakan ID yang ada di daftar MATERI TERSAFEL atau QUIZ TERSAFEL\n"
+            . "- Jangan mengarang ID\n"
+            . "- Jika tidak ada materi/quiz yang cocok, action = null\n\n"
+            . "Pesan user:\n{$message}";
+
+        return $context;
     }
 
     protected function buildSummaryPrompt(string $pdfText): string

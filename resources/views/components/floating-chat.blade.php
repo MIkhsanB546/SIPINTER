@@ -202,6 +202,44 @@ $apiKey = config('services.gemini.api_key');
     to   { opacity: 1; transform: translateY(0); }
 }
 
+.chat-action-card {
+    margin-top: 10px;
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.chat-action-card .action-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+.chat-action-card .btn-action {
+    flex: 1;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.chat-action-card .btn-action-go {
+    background: #095890;
+    color: #fff;
+}
+.chat-action-card .btn-action-go:hover {
+    background: #0a6aae;
+}
+.chat-action-card .btn-action-cancel {
+    background: #e9ecef;
+    color: #495057;
+}
+.chat-action-card .btn-action-cancel:hover {
+    background: #dee2e6;
+}
+
 #chatFooter {
     display: flex;
     align-items: center;
@@ -374,6 +412,37 @@ function addAiBubble(html) {
     div.innerHTML = html;
     body.appendChild(div);
     body.scrollTop = body.scrollHeight;
+    return div;
+}
+
+function addActionCard(bubbleEl, action, actionUrl) {
+    const card = document.createElement('div');
+    card.className = 'chat-action-card';
+
+    const buttons = document.createElement('div');
+    buttons.className = 'action-buttons';
+
+    const goBtn = document.createElement('button');
+    goBtn.className = 'btn-action btn-action-go';
+    goBtn.textContent = action.button || 'Buka';
+    goBtn.addEventListener('click', function () {
+        if (actionUrl) {
+            window.location.href = actionUrl;
+        }
+    });
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn-action btn-action-cancel';
+    cancelBtn.textContent = 'Batal';
+    cancelBtn.addEventListener('click', function () {
+        card.remove();
+    });
+
+    buttons.appendChild(goBtn);
+    buttons.appendChild(cancelBtn);
+    card.appendChild(buttons);
+    bubbleEl.appendChild(card);
+    bubbleEl.parentNode.scrollTop = bubbleEl.parentNode.scrollHeight;
 }
 
 function showTyping() {
@@ -419,7 +488,10 @@ async function sendMessage() {
         hideTyping();
 
         if (result.success) {
-            addAiBubble(markdownToHtml(result.data));
+            const bubble = addAiBubble(markdownToHtml(result.data));
+            if (result.action && result.action_url) {
+                addActionCard(bubble, result.action, result.action_url);
+            }
         } else {
             addAiBubble('<p>' + escapeHtml(result.message || 'Maaf, AI sedang tidak dapat dihubungi. Silakan coba lagi.') + '</p>');
         }
